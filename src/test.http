@@ -1,0 +1,51 @@
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+    "password": "securePassword123"
+}
+
+### LOGIN USER
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+    "password": "securePassword123"
+}
+
+
+### LOGOUT USER
+POST http://localhost:5000/api/auth/logout
+
+
+### SEARCH RECIPES BY INGREDIENTS
+GET http://localhost:5000/api/recipes/search?ingredients=chicken,tomato
+
+
+### SAVE RECIPE (protected)
+POST http://localhost:5000/api/recipes/save
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1MDA2NTBhMy0zZTAyLTQ3ZDAtYjQxOC01NDBiMjExOWRjYjMiLCJpYXQiOjE3Njg2NDQ2ODIsImV4cCI6MTc2ODY0NTU4Mn0.Ug6xx_5NbtVBtQ3ebLDRfr4srHLDMwaxpPm87m9znvA
+
+{
+  "id": "12345",
+  "title": "Egg Omelette",
+  "image": "https://example.com/image.jpg",
+  "instructions": "Beat eggs and cook."
+}
+
+
+### GET SAVED RECIPES (protected)
+GET http://localhost:5000/api/recipes/saved
+Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1MDA2NTBhMy0zZTAyLTQ3ZDAtYjQxOC01NDBiMjExOWRjYjMiLCJpYXQiOjE3Njg2NDQ2ODIsImV4cCI6MTc2ODY0NTU4Mn0.Ug6xx_5NbtVBtQ3ebLDRfr4srHLDMwaxpPm87m9znvA
+
+### GET SAVED RECIPE BY ID (protected)
+GET http://localhost:5000/api/recipes/saved/bba6020a-5f65-46f5-b1e8-1e40253b2710
+Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1MDA2NTBhMy0zZTAyLTQ3ZDAtYjQxOC01NDBiMjExOWRjYjMiLCJpYXQiOjE3Njg2NDQ2ODIsImV4cCI6MTc2ODY0NTU4Mn0.Ug6xx_5NbtVBtQ3ebLDRfr4srHLDMwaxpPm87m9znvA
+
+
+### DELETE SAVED RECIPE BY ID (protected)
+DELETE http://localhost:5000/api/recipes/saved/bba6020a-5f65-46f5-b1e8-1e40253b2710
+Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1MDA2NTBhMy0zZTAyLTQ3ZDAtYjQxOC01NDBiMjExOWRjYjMiLCJpYXQiOjE3Njg2NDQ2ODIsImV4cCI6MTc2ODY0NTU4Mn0.Ug6xx_5NbtVBtQ3ebLDRfr4srHLDMwaxpPm87m9znvA
