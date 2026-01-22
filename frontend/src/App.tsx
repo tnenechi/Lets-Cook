@@ -1,6 +1,6 @@
-import Hero from "./components/Hero";
+import Hero from "./pages/Hero";
 import Navbar from "./components/Navbar";
-import RecipeList from "./components/RecipeList";
+import RecipeList from "./pages/RecipeList";
 
 const App = () => {
   return (

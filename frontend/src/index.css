@@ -1,2 +1,15 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+.carousel {
+  /* overflow-x: hidden !important; */
+  scroll-snap-type: none !important;
+}
+
+.carousel-item {
+  scroll-snap-align: unset !important;
+}
+
+.top > .carousel-item:hover {
+  cursor: pointer;
+}
