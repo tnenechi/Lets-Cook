@@ -28,31 +28,52 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar bg-transparent shadow-sm px-9 justify-between">
+    <div className="navbar bg-base-100 shadow-sm justify-evenly items-center">
       {/* LOGO */}
       <div>
-        <Link to="/" className="text-[1rem] text-yellow-300">
+        <Link
+          to="/"
+          className="text-2xl text-gray-800 font-bold leading-tight shadow-2xl flex items-center gap-1"
+        >
+          <img src="/images/chef2.png" alt="" className="w-9 h-9"/>
           Let's Cook!
         </Link>
       </div>
 
       {/* SEARCH */}
-      <Form action="/search" className="flex gap-2">
-        <input
-          name="ingredients"
-          type="text"
-          placeholder="e.g: chicken, tomato, cream, pasta"
-          className="input input-bordered w-64 md:w-[30rem]"
-        />
-        <button type="submit" className="btn btn-secondary">
+      <Form action="/search" className="flex gap-2 items-center">
+        <label className="input w-72 md:w-[30rem]">
+          <svg
+            className="h-[1em] opacity-50"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+          >
+            <g
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              strokeWidth="2.5"
+              fill="none"
+              stroke="currentColor"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.3-4.3"></path>
+            </g>
+          </svg>
+          <input
+            type="search"
+            required
+            placeholder="e.g: chicken, tomato, cream, pasta"
+          />
+        </label>
+        {/* <button type="submit" className="btn btn-secondary">
           Find recipes
-        </button>
+        </button> */}
       </Form>
 
       {/* LOGIN */}
       <div className="">
         {!user ? (
-          <Link to="/login" className="btn btn-outline btn-primary">
+          <Link to="/login" className="btn btn-primary">
             Log In
           </Link>
         ) : (
@@ -63,10 +84,7 @@ const Navbar = () => {
               className="btn btn-ghost btn-circle avatar"
             >
               <div className="w-10 rounded-full">
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                />
+                <img alt="profile" src="/images/chef.png" />
               </div>
             </div>
             <ul

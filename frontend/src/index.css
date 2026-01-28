@@ -1,5 +1,10 @@
 @import "tailwindcss";
-@plugin "daisyui";
+
+@plugin "daisyui" {
+  themes:
+    cupcake --default,
+    coffee;
+}
 
 .carousel {
   /* overflow-x: hidden !important; */
