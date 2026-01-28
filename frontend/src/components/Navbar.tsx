@@ -73,7 +73,7 @@ const Navbar = () => {
       {/* LOGIN */}
       <div className="">
         {!user ? (
-          <Link to="/login" className="btn btn-primary">
+          <Link to="/login" className="btn btn-primary btn-outline text-primary-content">
             Log In
           </Link>
         ) : (
