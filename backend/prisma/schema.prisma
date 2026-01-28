@@ -30,7 +30,12 @@ model Recipe {
   externalId    String?     @unique
   title         String
   imageUrl      String?
-  instructions  String?
+  readyInMinutes String?
+  sourceUrl String?
+  summary  String?
+  glutenFree Boolean?
+  vegan Boolean?
+  vegetarian Boolean?
   createdAt     DateTime    @default(now())
 
   savedBy SavedRecipe[]

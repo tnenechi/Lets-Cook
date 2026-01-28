@@ -1,7 +1,27 @@
 import type { Request, Response } from "express";
 import { Send } from "../utils/response.js";
-import { searchRecipesByIngredients } from "../externalServices/recipe.service.js";
+import {
+  GetRecipeInformationBulk,
+  searchRecipesByIngredients,
+} from "../externalServices/recipe.service.js";
 import { prisma } from "../../lib/prisma.js";
+
+type Recipe = {
+  id: number;
+  image: string;
+};
+
+type RecipeInfo = {
+  id: number;
+  title: string;
+  image: string;
+  readyInMinutes: number;
+  sourceUrl: string;
+  summary: string;
+  glutenFree: boolean;
+  vegan: boolean;
+  vegetarian: boolean;
+};
 
 export const searchRecipes = async (req: Request, res: Response) => {
   const ingredientsParam = req.query.ingredients as string;
@@ -14,9 +34,13 @@ export const searchRecipes = async (req: Request, res: Response) => {
     .split(",")
     .map((ing) => ing.trim().toLowerCase());
 
-  const recipes = await searchRecipesByIngredients(ingredients);
+  const recipes: Recipe[] = await searchRecipesByIngredients(ingredients);
 
-  return Send.success(res, { recipes });
+  const recipeIds = recipes.map((recipe) => recipe.id);
+
+  const recipesInfo: RecipeInfo[] = await GetRecipeInformationBulk(recipeIds);
+
+  return Send.success(res, { recipesInfo });
 };
 
 export const saveRecipe = async (req: Request, res: Response) => {
@@ -31,7 +55,12 @@ export const saveRecipe = async (req: Request, res: Response) => {
       externalId: recipeData.id,
       title: recipeData.title,
       imageUrl: recipeData.image,
-      instructions: recipeData.instructions ?? null,
+      readyInMinutes: recipeData.readyInMinutes,
+      sourceUrl: recipeData.sourceUrl,
+      summary: recipeData.summary,
+      glutenFree: recipeData.glutenFree,
+      vegan: recipeData.vegan,
+      vegetarian: recipeData.vegetarian,
     },
   });
 
@@ -71,7 +100,7 @@ export const getSavedRecipes = async (req: Request, res: Response) => {
 export const getSavedRecipeById = async (req: Request, res: Response) => {
   const user = (req as any).user;
   const recipeId = req.params.id;
-  
+
   const savedRecipe = await prisma.savedRecipe.findUnique({
     where: {
       userId_recipeId: {

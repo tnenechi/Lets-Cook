@@ -6,7 +6,7 @@ import { prisma } from "../../lib/prisma.js";
 export const authenticateUser = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   let token;
 
@@ -22,13 +22,18 @@ export const authenticateUser = async (
 
   //verify the token
   try {
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_ACCESS_SECRET as string
-    );
+    const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET as string);
 
     const userId = (decoded as { userId: string }).userId;
-    const user = await prisma.user.findUnique({ where: { id: userId } });
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        createdAt: true,
+      },
+    });
 
     if (!user) {
       return Send.unauthorized(res, "User no longer exists");

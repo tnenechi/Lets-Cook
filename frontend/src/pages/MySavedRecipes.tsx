@@ -9,7 +9,7 @@ import { FaHeart } from "react-icons/fa";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const RecipeList = () => {
+const MySavedRecipes = () => {
   type Recipe = {
     id: number;
     title: string;
@@ -22,7 +22,7 @@ const RecipeList = () => {
     vegetarian: boolean;
   };
 
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [recipes, setRecipes] = useState<Recipe[]>();
 
   const [searchParams] = useSearchParams();
   const ingredients = searchParams.get("ingredients") || "";
@@ -31,11 +31,9 @@ const RecipeList = () => {
   useEffect(() => {
     if (!ingredients) return;
 
-    const handleSearch = async () => {
+    const handleGetSaved = async () => {
       try {
-        const { data } = await api.get("/recipes/search", {
-          params: { ingredients },
-        });
+        const { data } = await api.get("/recipes/saved");
 
         console.log("Returned from /recipes/search", data);
         setRecipes(data.data);
@@ -45,26 +43,16 @@ const RecipeList = () => {
       }
     };
 
-    handleSearch();
+    handleGetSaved();
   }, [ingredients]);
 
-  const handleSaveRecipe = async (recipe: Recipe) => {
+  const handleDeleteRecipe = async (recipeId: number | string) => {
     try {
-      const response = await api.post("/recipes/saved", {
-        id: recipe.id,
-        title: recipe.title,
-        imageUrl: recipe.image,
-        readyInMinutes: recipe.readyInMinutes,
-        sourceUrl: recipe.sourceUrl,
-        summary: recipe.summary,
-        glutenFree: recipe.glutenFree,
-        vegan: recipe.vegan,
-        vegetarian: recipe.vegetarian,
-      });
-      toast.success("Recipe saved successfully");
+      const response = await api.delete(`/recipes/saved/${recipeId}`);
+      toast.success("Recipe deleted successfully");
     } catch (error) {
       toast.error("Something went wrong. Please try again");
-      console.error("Search failed", error);
+      console.error("Delete recipe failed", error);
     }
   };
 
@@ -76,7 +64,8 @@ const RecipeList = () => {
         </div>
       ) : (
         <div className="text-lg font-semibold leading-tight tracking-wide h-[70vh] flex justify-center items-center">
-          Enter your ingredients to find recipes for you. 😊
+          You haven't saved any recipes <br /> Enter your ingredients to find
+          recipes for you. 😊
         </div>
       )}
 
@@ -92,11 +81,11 @@ const RecipeList = () => {
             >
               <div className="p-4 absolute bottom-0 right-0 w-full flex justify-end">
                 <div
-                  onClick={() => handleSaveRecipe(recipe)}
+                  onClick={() => handleDeleteRecipe(recipe.id)}
                   className="w-9 h-9 bg-gray-400/50 rounded-full flex items-center justify-center"
                 >
                   <FaHeart
-                    title="Save recipe."
+                    title="Unsave recipe."
                     className="text-red-600 cursor-pointer"
                   />
                 </div>
@@ -165,4 +154,4 @@ const RecipeList = () => {
   );
 };
 
-export default RecipeList;
+export default MySavedRecipes;

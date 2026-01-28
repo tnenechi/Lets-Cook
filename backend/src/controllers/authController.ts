@@ -32,7 +32,7 @@ const register = async (req: Request, res: Response) => {
     return Send.success(
       res,
       { userId: newUser.id },
-      "User registered successfully"
+      "User registered successfully",
     );
   } catch (error) {
     console.error("Registration error:", error);
@@ -108,14 +108,15 @@ const refreshToken = async (req: Request, res: Response) => {
   try {
     const decoded = jwt.verify(
       refreshToken,
-      process.env.REFRESH_TOKEN_SECRET as string
+      process.env.JWT_REFRESH_SECRET as string,
     ) as { userId: string };
 
-    const user = await prisma.user.findUnique({ where: { id: decoded.userId } });
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.userId },
+    });
     if (!user) {
       return Send.unauthorized(res, "User not found");
     }
-
 
     const newAccessToken = generateAccessToken(user.id);
 
@@ -130,7 +131,10 @@ const refreshToken = async (req: Request, res: Response) => {
     console.error("Refresh token error:", error);
     return Send.unauthorized(res, "Invalid refresh token");
   }
+};
 
-}
+const getUser = (req: Request, res: Response) => {
+  return Send.success(res, { user: (req as any).user });
+};
 
-export { register, login, logOut, refreshToken };
+export { register, login, logOut, refreshToken, getUser };
