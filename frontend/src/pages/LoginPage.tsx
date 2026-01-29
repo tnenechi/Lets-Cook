@@ -14,10 +14,6 @@ export async function loginAction({ request }: ActionFunctionArgs) {
 
   try {
     const res = await api.post("/auth/login", { email, password });
-    if (!res.data.success) {
-      toast.error(res?.data?.message);
-      return { error: res.data.data || "Invalid credentials" };
-    }
 
     return redirect("/");
   } catch (err: any) {

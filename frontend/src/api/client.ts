@@ -1,9 +1,8 @@
 import axios from "axios";
-import toast from "react-hot-toast";
 import { redirect } from "react-router";
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: "/api",
   withCredentials: true,
 });
 

@@ -1,22 +1,9 @@
-import { useEffect, useState } from "react";
 import { Form, Link } from "react-router";
 import api from "../api/client";
+import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const fetchMe = async () => {
-      try {
-        const { data } = await api.get("/auth/me");
-        setUser(data.data.user);
-      } catch {
-        setUser(null);
-      }
-    };
-
-    fetchMe();
-  }, []);
+  const { user, setUser } = useAuth();
 
   const handleLogout = async () => {
     try {
@@ -35,7 +22,7 @@ const Navbar = () => {
           to="/"
           className="text-2xl text-gray-800 font-bold leading-tight shadow-2xl flex items-center gap-1"
         >
-          <img src="/images/chef2.png" alt="" className="w-9 h-9"/>
+          <img src="/images/chef2.png" alt="" className="w-9 h-9" />
           Let's Cook!
         </Link>
       </div>
@@ -62,6 +49,7 @@ const Navbar = () => {
           <input
             type="search"
             required
+            name="ingredients"
             placeholder="e.g: chicken, tomato, cream, pasta"
           />
         </label>
@@ -73,7 +61,10 @@ const Navbar = () => {
       {/* LOGIN */}
       <div className="">
         {!user ? (
-          <Link to="/login" className="btn btn-primary btn-outline text-primary-content">
+          <Link
+            to="/login"
+            className="btn btn-primary btn-outline text-primary-content"
+          >
             Log In
           </Link>
         ) : (

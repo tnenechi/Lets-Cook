@@ -63,18 +63,18 @@ const login = async (req: Request, res: Response) => {
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "lax",
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
 
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "lax",
       maxAge: 15 * 60 * 1000, // 15 minutes
     });
 
-    return Send.success(res, { id: user.id }, "Login successful");
+    return Send.success(res, { user: (req as any).user }, "Login successful");
   } catch (error) {
     console.error("Login error:", error);
     return Send.error(res, "Login failed");
@@ -85,14 +85,14 @@ const logOut = (req: Request, res: Response) => {
   res.clearCookie("refreshToken", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    sameSite: "lax",
     expires: new Date(0),
   });
 
   res.clearCookie("accessToken", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    sameSite: "lax",
     expires: new Date(0),
   });
 
@@ -123,7 +123,7 @@ const refreshToken = async (req: Request, res: Response) => {
     res.cookie("accessToken", newAccessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "lax",
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
     return Send.success(res, null, "Access token refreshed");

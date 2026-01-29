@@ -16,82 +16,82 @@ const RecipeList = () => {
     vegetarian: boolean;
   };
 
-  const recipes: Recipe[] = [
-    {
-      id: 1,
-      title: "Avocado Toast with Poached Egg",
-      image: "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
-      readyInMinutes: 10,
-      sourceUrl: "https://example.com/avocado-toast",
-      summary:
-        "Creamy avocado spread over toasted sourdough topped with a perfectly poached egg.",
-      glutenFree: false,
-      vegan: false,
-      vegetarian: true,
-    },
-    {
-      id: 2,
-      title: "Vegan Buddha Bowl",
-      image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c",
-      readyInMinutes: 25,
-      sourceUrl: "https://example.com/buddha-bowl",
-      summary:
-        "A nourishing bowl of quinoa, roasted vegetables, chickpeas, and tahini dressing.",
-      glutenFree: true,
-      vegan: true,
-      vegetarian: true,
-    },
-    {
-      id: 3,
-      title: "Margherita Pizza",
-      image: "https://images.unsplash.com/photo-1601924582975-7e1b3c4f2b9c",
-      readyInMinutes: 30,
-      sourceUrl: "https://example.com/margherita-pizza",
-      summary:
-        "Classic Italian pizza with tomato sauce, fresh mozzarella, and basil leaves.",
-      glutenFree: false,
-      vegan: false,
-      vegetarian: true,
-    },
-    {
-      id: 4,
-      title: "Grilled Salmon with Lemon",
-      image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2",
-      readyInMinutes: 20,
-      sourceUrl: "https://example.com/grilled-salmon",
-      summary:
-        "Tender grilled salmon fillet served with fresh lemon and herbs.",
-      glutenFree: true,
-      vegan: false,
-      vegetarian: false,
-    },
-    {
-      id: 5,
-      title: "Gluten-Free Pancakes",
-      image: "https://images.unsplash.com/photo-1587731342377-7a5b8f64c6c0",
-      readyInMinutes: 15,
-      sourceUrl: "https://example.com/gluten-free-pancakes",
-      summary:
-        "Fluffy gluten-free pancakes served with maple syrup and fresh berries.",
-      glutenFree: true,
-      vegan: false,
-      vegetarian: true,
-    },
-    {
-      id: 6,
-      title: "Spaghetti Aglio e Olio",
-      image: "https://images.unsplash.com/photo-1521389508051-d7ffb5dc8c89",
-      readyInMinutes: 20,
-      sourceUrl: "https://example.com/aglio-e-olio",
-      summary:
-        "Simple Italian pasta with garlic, olive oil, chili flakes, and parsley.",
-      glutenFree: false,
-      vegan: true,
-      vegetarian: true,
-    },
-  ];
+  // const recipes: Recipe[] = [
+  //   {
+  //     id: 1,
+  //     title: "Avocado Toast with Poached Egg",
+  //     image: "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+  //     readyInMinutes: 10,
+  //     sourceUrl: "https://example.com/avocado-toast",
+  //     summary:
+  //       "Creamy avocado spread over toasted sourdough topped with a perfectly poached egg.",
+  //     glutenFree: false,
+  //     vegan: false,
+  //     vegetarian: true,
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Vegan Buddha Bowl",
+  //     image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c",
+  //     readyInMinutes: 25,
+  //     sourceUrl: "https://example.com/buddha-bowl",
+  //     summary:
+  //       "A nourishing bowl of quinoa, roasted vegetables, chickpeas, and tahini dressing.",
+  //     glutenFree: true,
+  //     vegan: true,
+  //     vegetarian: true,
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Margherita Pizza",
+  //     image: "https://images.unsplash.com/photo-1601924582975-7e1b3c4f2b9c",
+  //     readyInMinutes: 30,
+  //     sourceUrl: "https://example.com/margherita-pizza",
+  //     summary:
+  //       "Classic Italian pizza with tomato sauce, fresh mozzarella, and basil leaves.",
+  //     glutenFree: false,
+  //     vegan: false,
+  //     vegetarian: true,
+  //   },
+  //   {
+  //     id: 4,
+  //     title: "Grilled Salmon with Lemon",
+  //     image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2",
+  //     readyInMinutes: 20,
+  //     sourceUrl: "https://example.com/grilled-salmon",
+  //     summary:
+  //       "Tender grilled salmon fillet served with fresh lemon and herbs.",
+  //     glutenFree: true,
+  //     vegan: false,
+  //     vegetarian: false,
+  //   },
+  //   {
+  //     id: 5,
+  //     title: "Gluten-Free Pancakes",
+  //     image: "https://images.unsplash.com/photo-1587731342377-7a5b8f64c6c0",
+  //     readyInMinutes: 15,
+  //     sourceUrl: "https://example.com/gluten-free-pancakes",
+  //     summary:
+  //       "Fluffy gluten-free pancakes served with maple syrup and fresh berries.",
+  //     glutenFree: true,
+  //     vegan: false,
+  //     vegetarian: true,
+  //   },
+  //   {
+  //     id: 6,
+  //     title: "Spaghetti Aglio e Olio",
+  //     image: "https://images.unsplash.com/photo-1521389508051-d7ffb5dc8c89",
+  //     readyInMinutes: 20,
+  //     sourceUrl: "https://example.com/aglio-e-olio",
+  //     summary:
+  //       "Simple Italian pasta with garlic, olive oil, chili flakes, and parsley.",
+  //     glutenFree: false,
+  //     vegan: true,
+  //     vegetarian: true,
+  //   },
+  // ];
 
-  // const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
 
   const [searchParams] = useSearchParams();
   const ingredients = searchParams.get("ingredients") || "";
@@ -99,30 +99,39 @@ const RecipeList = () => {
   const [saved, setSaved] = useState<number[]>([]);
 
   // *** DATA FETCH ***
-  // useEffect(() => {
-  //   if (!ingredients) return;
+  useEffect(() => {
+    if (!ingredients) {
+      console.log("No ingredients enterd");
+      return;
+    }
 
-  //   const handleSearch = async () => {
-  //     try {
-  //       const { data } = await api.get("/recipes/search", {
-  //         params: { ingredients },
-  //       });
+    const getRecipes = async () => {
+      try {
+        console.log("Calling /search endpoint");
+        const { data } = await api.get("/recipes/search", {
+          params: { ingredients },
+        });
 
-  //       console.log("Returned from /recipes/search", data);
-  //       setRecipes(data.data);
-  //     } catch (error) {
-  //       toast.error("Something went wrong. Please try again");
-  //       console.error("Search failed", error);
-  //     }
-  //   };
+        console.log("Returned from /recipes/search", data);
+        setRecipes(data.data.recipesInfo);
+      } catch (error) {
+        toast.error("Something went wrong. Please try again");
+        console.error("Search failed", error);
+      }
+    };
 
-  //   return () => {
-  //     saved.forEach(async (recipeId) => {
-  //       const recipe = recipes.find((r) => r.id === recipeId);
-  //       if (recipe) await handleSaveRecipe(recipe);
-  //     });
-  //   };
-  // }, [ingredients]);
+    getRecipes();
+
+    return () => {
+      // Save recipes when component unmounts or ingredients change
+      saved.forEach((recipeId) => {
+        const recipe = recipes.find((r) => r.id === recipeId);
+        if (recipe) {
+          handleSaveRecipe(recipe);
+        }
+      });
+    };
+  }, [ingredients]);
 
   const handleClick = (recipeId: number) => {
     if (saved.includes(recipeId)) {
@@ -153,7 +162,7 @@ const RecipeList = () => {
   };
 
   return (
-    <div className="px-9 pb-10">
+    <div className="px-9 pb-20">
       {recipes ? (
         <div className="py-4">
           <h2>Recipes for you...</h2>
@@ -213,7 +222,7 @@ const RecipeList = () => {
               </div>
 
               <p className="text-sm text-gray-600 line-clamp-3">
-                {recipe.summary}
+                {recipe.summary.replace(/<[^>]+>/g, "")}
               </p>
 
               <div className="mt-auto flex items-center justify-between">

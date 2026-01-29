@@ -1,13 +1,7 @@
-import { gsap } from "gsap";
-import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 import api from "../api/client";
 import toast from "react-hot-toast";
-import { FaHeart } from "react-icons/fa";
-
-gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const MySavedRecipes = () => {
   type Recipe = {
@@ -23,6 +17,7 @@ const MySavedRecipes = () => {
   };
 
   const [recipes, setRecipes] = useState<Recipe[]>();
+  const [unsaved, setUnSaved] = useState<number[]>([]);
 
   const [searchParams] = useSearchParams();
   const ingredients = searchParams.get("ingredients") || "";
@@ -44,9 +39,24 @@ const MySavedRecipes = () => {
     };
 
     handleGetSaved();
+
+    return () => {
+      // Delete recipes when component unmounts
+      unsaved.forEach((unsavedId) => {
+        handleDeleteRecipe(unsavedId);
+      });
+    };
   }, [ingredients]);
 
-  const handleDeleteRecipe = async (recipeId: number | string) => {
+  const handleClick = (recipeId: number) => {
+    if (unsaved.includes(recipeId)) {
+      setUnSaved((prev) => prev.filter((id) => id !== recipeId));
+    } else {
+      setUnSaved((prev) => [...prev, recipeId]);
+    }
+  };
+
+  const handleDeleteRecipe = async (recipeId: number) => {
     try {
       const response = await api.delete(`/recipes/saved/${recipeId}`);
       toast.success("Recipe deleted successfully");
@@ -57,15 +67,14 @@ const MySavedRecipes = () => {
   };
 
   return (
-    <div className="px-9 pb-10">
+    <div className="px-9 pb-20">
       {recipes ? (
         <div className="py-4">
-          <h2>Recipes for you...</h2>
+          <h2>Recipes you loved...</h2>
         </div>
       ) : (
         <div className="text-lg font-semibold leading-tight tracking-wide h-[70vh] flex justify-center items-center">
-          You haven't saved any recipes <br /> Enter your ingredients to find
-          recipes for you. 😊
+          Enter your ingredients to find recipes for you. 😊
         </div>
       )}
 
@@ -80,15 +89,26 @@ const MySavedRecipes = () => {
               style={{ backgroundImage: `url(${recipe.image})` }}
             >
               <div className="p-4 absolute bottom-0 right-0 w-full flex justify-end">
-                <div
-                  onClick={() => handleDeleteRecipe(recipe.id)}
-                  className="w-9 h-9 bg-gray-400/50 rounded-full flex items-center justify-center"
+                <button
+                  onClick={() => handleClick(recipe.id)}
+                  className="btn btn-circle"
+                  title="Save recipe."
                 >
-                  <FaHeart
-                    title="Unsave recipe."
-                    className="text-red-600 cursor-pointer"
-                  />
-                </div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill={unsaved.includes(recipe.id) ? "none" : "red"}
+                    viewBox="0 0 24 24"
+                    strokeWidth="2.5"
+                    stroke="currentColor"
+                    className="size-[1.2em]"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+                    />
+                  </svg>
+                </button>
               </div>
             </div>
 
@@ -97,16 +117,17 @@ const MySavedRecipes = () => {
                 <h3 className="font-semibold text-lg leading-tight text-gray-800">
                   {recipe.title}
                 </h3>
-                <span
-                  className="text-sm text-gray-800 h-9 w-9 rounded-full bg-gray-300 p-1 flex justify-center items-center"
+
+                <p
+                  className="text-sm whitespace-nowrap"
                   title={`Ready in ${recipe.readyInMinutes} minutes.`}
                 >
-                  {recipe.readyInMinutes}
-                </span>
+                  {recipe.readyInMinutes + " min"}
+                </p>
               </div>
 
               <p className="text-sm text-gray-600 line-clamp-3">
-                {recipe.summary}
+                {recipe.summary.replace(/<[^>]+>/g, "")}
               </p>
 
               <div className="mt-auto flex items-center justify-between">
@@ -114,7 +135,7 @@ const MySavedRecipes = () => {
                   href={recipe.sourceUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-800 btn btn-info"
+                  className="btn btn-primary"
                 >
                   View Recipe
                 </a>
@@ -122,26 +143,26 @@ const MySavedRecipes = () => {
                 <div className="flex items-center gap-1">
                   {recipe.glutenFree && (
                     <span
-                      className="text-sm rounded-full bg-gray-200 p-1 flex justify-center items-center"
+                      className="h-9 w-9 rounded-full bg-gray-200 p-1 flex justify-center items-center"
                       title="Gluten Free"
                     >
-                      🌾
+                      <img src="/images/gluten-free.png" alt="gluten-free" />
                     </span>
                   )}
                   {recipe.vegan && (
                     <span
-                      className="text-sm rounded-full bg-gray-200 p-1 flex justify-center items-center"
+                      className="h-9 w-9 text-sm rounded-full bg-gray-200 p-1 flex justify-center items-center"
                       title="Vegan"
                     >
-                      🌱
+                      <img src="/images/vegan.png" alt="vegan" className="" />
                     </span>
                   )}
                   {recipe.vegetarian && (
                     <span
-                      className="text-sm rounded-full bg-gray-200 p-1 flex justify-center items-center"
+                      className="h-9 w-9 text-sm rounded-full bg-gray-200 p-1 flex justify-center items-center"
                       title="Vegetarian"
                     >
-                      🥕
+                      <img src="/images/vegetarian.png" alt="vegetarian" />
                     </span>
                   )}
                 </div>
