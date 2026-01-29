@@ -10,12 +10,12 @@ const Footer = (props: Props) => {
         clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)",
       }}
     >
-      <footer className="footer h-[30vh] sm:footer-horizontal bg-neutral text-neutral-content items-center justify-center p-4 fixed bottom-0">
+      <footer className="footer h-[30vh] sm:footer-horizontal bg-base-100 text-base-content items-center justify-center p-4 fixed bottom-0">
         <aside className="grid-flow-col items-center">
           <p>Copyright © {new Date().getFullYear()} - All right reserved</p>
         </aside>
 
-        <nav className="grid-flow-col gap-4 md:place-self-center md:justify-self-end">
+        <nav className="grid-flow-col gap-4 md:place-self-center md:justify-self-end leading-">
           <a>
             <svg
               xmlns="http://www.w3.org/2000/svg"

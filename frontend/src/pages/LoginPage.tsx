@@ -26,11 +26,15 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center ">
       <div className="w-full max-w-5xl rounded-xl shadow-lg grid grid-cols-1 md:grid-cols-2 overflow-hidden">
-        {/* Gradient Column */}
-        <div className="hidden md:flex flex-col justify-between p-10 bg-base-200 text-base-content">
-          <div>
-            <h1 className="text-3xl font-bold mb-4">WELCOME BACK</h1>
-            <p className="text-md opacity-80 mb-2">Nice to see you again! 😊</p>
+        {/* Left Column */}
+        <div
+          className="hidden md:flex flex-col justify-between p-10  bg-cover bg-center relative"
+          style={{ backgroundImage: "url('/images/chicken2.jpg')" }}
+        >
+          <div className="absolute inset-0 bg-neutral/40" />
+          <div className="z-10 text-white">
+            <h1 className="mb-4">WELCOME BACK</h1>
+            <h3 className="mb-2">Nice to see you again! 😊</h3>
           </div>
           <div />
         </div>
@@ -38,12 +42,8 @@ export default function LoginPage() {
         {/* Form Column */}
         <div className="flex items-center justify-center p-10">
           <div className="w-full max-w-sm ">
-            <h2 className="text-2xl font-semibold mb-2 text-slate-800">
-              Login Account
-            </h2>
-            <p className="text-sm text-slate-500 mb-6">
-              Please enter your credentials to continue.
-            </p>
+            <h2 className="mb-2">Login Account</h2>
+            <p className="mb-6">Please enter your credentials to continue.</p>
 
             <Form method="post" className="space-y-4">
               {/* EMAIL */}
@@ -108,7 +108,7 @@ export default function LoginPage() {
               </button>
             </Form>
 
-            <p className="text-sm text-center text-slate-600 mt-4">
+            <p className="text-center mt-4">
               Don’t have an account?{" "}
               <Link to="/register" className="text-info hover:underline">
                 Register

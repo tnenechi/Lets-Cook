@@ -16,82 +16,82 @@ const RecipeList = () => {
     vegetarian: boolean;
   };
 
-  // const recipes: Recipe[] = [
-  //   {
-  //     id: 1,
-  //     title: "Avocado Toast with Poached Egg",
-  //     image: "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
-  //     readyInMinutes: 10,
-  //     sourceUrl: "https://example.com/avocado-toast",
-  //     summary:
-  //       "Creamy avocado spread over toasted sourdough topped with a perfectly poached egg.",
-  //     glutenFree: false,
-  //     vegan: false,
-  //     vegetarian: true,
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "Vegan Buddha Bowl",
-  //     image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c",
-  //     readyInMinutes: 25,
-  //     sourceUrl: "https://example.com/buddha-bowl",
-  //     summary:
-  //       "A nourishing bowl of quinoa, roasted vegetables, chickpeas, and tahini dressing.",
-  //     glutenFree: true,
-  //     vegan: true,
-  //     vegetarian: true,
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "Margherita Pizza",
-  //     image: "https://images.unsplash.com/photo-1601924582975-7e1b3c4f2b9c",
-  //     readyInMinutes: 30,
-  //     sourceUrl: "https://example.com/margherita-pizza",
-  //     summary:
-  //       "Classic Italian pizza with tomato sauce, fresh mozzarella, and basil leaves.",
-  //     glutenFree: false,
-  //     vegan: false,
-  //     vegetarian: true,
-  //   },
-  //   {
-  //     id: 4,
-  //     title: "Grilled Salmon with Lemon",
-  //     image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2",
-  //     readyInMinutes: 20,
-  //     sourceUrl: "https://example.com/grilled-salmon",
-  //     summary:
-  //       "Tender grilled salmon fillet served with fresh lemon and herbs.",
-  //     glutenFree: true,
-  //     vegan: false,
-  //     vegetarian: false,
-  //   },
-  //   {
-  //     id: 5,
-  //     title: "Gluten-Free Pancakes",
-  //     image: "https://images.unsplash.com/photo-1587731342377-7a5b8f64c6c0",
-  //     readyInMinutes: 15,
-  //     sourceUrl: "https://example.com/gluten-free-pancakes",
-  //     summary:
-  //       "Fluffy gluten-free pancakes served with maple syrup and fresh berries.",
-  //     glutenFree: true,
-  //     vegan: false,
-  //     vegetarian: true,
-  //   },
-  //   {
-  //     id: 6,
-  //     title: "Spaghetti Aglio e Olio",
-  //     image: "https://images.unsplash.com/photo-1521389508051-d7ffb5dc8c89",
-  //     readyInMinutes: 20,
-  //     sourceUrl: "https://example.com/aglio-e-olio",
-  //     summary:
-  //       "Simple Italian pasta with garlic, olive oil, chili flakes, and parsley.",
-  //     glutenFree: false,
-  //     vegan: true,
-  //     vegetarian: true,
-  //   },
-  // ];
+  const recipes: Recipe[] = [
+    {
+      id: 1,
+      title: "Avocado Toast with Poached Egg",
+      image: "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+      readyInMinutes: 10,
+      sourceUrl: "https://example.com/avocado-toast",
+      summary:
+        "Creamy avocado spread over toasted sourdough topped with a perfectly poached egg.",
+      glutenFree: false,
+      vegan: false,
+      vegetarian: true,
+    },
+    {
+      id: 2,
+      title: "Vegan Buddha Bowl",
+      image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c",
+      readyInMinutes: 25,
+      sourceUrl: "https://example.com/buddha-bowl",
+      summary:
+        "A nourishing bowl of quinoa, roasted vegetables, chickpeas, and tahini dressing.",
+      glutenFree: true,
+      vegan: true,
+      vegetarian: true,
+    },
+    {
+      id: 3,
+      title: "Margherita Pizza",
+      image: "https://images.unsplash.com/photo-1601924582975-7e1b3c4f2b9c",
+      readyInMinutes: 30,
+      sourceUrl: "https://example.com/margherita-pizza",
+      summary:
+        "Classic Italian pizza with tomato sauce, fresh mozzarella, and basil leaves.",
+      glutenFree: false,
+      vegan: false,
+      vegetarian: true,
+    },
+    {
+      id: 4,
+      title: "Grilled Salmon with Lemon",
+      image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2",
+      readyInMinutes: 20,
+      sourceUrl: "https://example.com/grilled-salmon",
+      summary:
+        "Tender grilled salmon fillet served with fresh lemon and herbs.",
+      glutenFree: true,
+      vegan: false,
+      vegetarian: false,
+    },
+    {
+      id: 5,
+      title: "Gluten-Free Pancakes",
+      image: "https://images.unsplash.com/photo-1587731342377-7a5b8f64c6c0",
+      readyInMinutes: 15,
+      sourceUrl: "https://example.com/gluten-free-pancakes",
+      summary:
+        "Fluffy gluten-free pancakes served with maple syrup and fresh berries.",
+      glutenFree: true,
+      vegan: false,
+      vegetarian: true,
+    },
+    {
+      id: 6,
+      title: "Spaghetti Aglio e Olio",
+      image: "https://images.unsplash.com/photo-1521389508051-d7ffb5dc8c89",
+      readyInMinutes: 20,
+      sourceUrl: "https://example.com/aglio-e-olio",
+      summary:
+        "Simple Italian pasta with garlic, olive oil, chili flakes, and parsley.",
+      glutenFree: false,
+      vegan: true,
+      vegetarian: true,
+    },
+  ];
 
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  // const [recipes, setRecipes] = useState<Recipe[]>([]);
 
   const [searchParams] = useSearchParams();
   const ingredients = searchParams.get("ingredients") || "";
@@ -99,39 +99,39 @@ const RecipeList = () => {
   const [saved, setSaved] = useState<number[]>([]);
 
   // *** DATA FETCH ***
-  useEffect(() => {
-    if (!ingredients) {
-      console.log("No ingredients enterd");
-      return;
-    }
+  // useEffect(() => {
+  //   if (!ingredients) {
+  //     console.log("No ingredients enterd");
+  //     return;
+  //   }
 
-    const getRecipes = async () => {
-      try {
-        console.log("Calling /search endpoint");
-        const { data } = await api.get("/recipes/search", {
-          params: { ingredients },
-        });
+  //   const getRecipes = async () => {
+  //     try {
+  //       console.log("Calling /search endpoint");
+  //       const { data } = await api.get("/recipes/search", {
+  //         params: { ingredients },
+  //       });
 
-        console.log("Returned from /recipes/search", data);
-        setRecipes(data.data.recipesInfo);
-      } catch (error) {
-        toast.error("Something went wrong. Please try again");
-        console.error("Search failed", error);
-      }
-    };
+  //       console.log("Returned from /recipes/search", data);
+  //       setRecipes(data.data.recipesInfo);
+  //     } catch (error) {
+  //       toast.error("Something went wrong. Please try again");
+  //       console.error("Search failed", error);
+  //     }
+  //   };
 
-    getRecipes();
+  //   getRecipes();
 
-    return () => {
-      // Save recipes when component unmounts or ingredients change
-      saved.forEach((recipeId) => {
-        const recipe = recipes.find((r) => r.id === recipeId);
-        if (recipe) {
-          handleSaveRecipe(recipe);
-        }
-      });
-    };
-  }, [ingredients]);
+  //   return () => {
+  //     // Save recipes when component unmounts or ingredients change
+  //     saved.forEach((recipeId) => {
+  //       const recipe = recipes.find((r) => r.id === recipeId);
+  //       if (recipe) {
+  //         handleSaveRecipe(recipe);
+  //       }
+  //     });
+  //   };
+  // }, [ingredients]);
 
   const handleClick = (recipeId: number) => {
     if (saved.includes(recipeId)) {
@@ -168,8 +168,8 @@ const RecipeList = () => {
           <h2>Recipes for you...</h2>
         </div>
       ) : (
-        <div className="text-lg font-semibold leading-tight tracking-wide h-[70vh] flex justify-center items-center">
-          Enter your ingredients to find recipes for you. 😊
+        <div className="h-[70vh] flex justify-center items-center">
+          <h2>Enter your ingredients to find recipes for you. 😊</h2>
         </div>
       )}
 
@@ -177,7 +177,7 @@ const RecipeList = () => {
         {recipes?.map((recipe) => (
           <div
             key={recipe.id}
-            className="w-full sm:w-[280px] bg-white rounded-xl overflow-hidden shadow-md flex flex-col"
+            className="w-full sm:w-[280px] bg-base-300 text-base-content rounded-xl overflow-hidden shadow-md flex flex-col"
           >
             <div
               className="h-44 bg-center bg-cover relative"
@@ -186,7 +186,7 @@ const RecipeList = () => {
               <div className="p-4 absolute bottom-0 right-0 w-full flex justify-end">
                 <button
                   onClick={() => handleClick(recipe.id)}
-                  className="btn btn-circle"
+                  className="btn btn-circle bg-neutral-content text-neutral"
                   title="Save recipe."
                 >
                   <svg
@@ -209,19 +209,17 @@ const RecipeList = () => {
 
             <div className="p-4 flex flex-col gap-2 flex-1">
               <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-lg leading-tight text-gray-800">
-                  {recipe.title}
-                </h3>
+                <h3>{recipe.title}</h3>
 
                 <p
-                  className="text-sm whitespace-nowrap"
+                  className="whitespace-nowrap"
                   title={`Ready in ${recipe.readyInMinutes} minutes.`}
                 >
                   {recipe.readyInMinutes + " min"}
                 </p>
               </div>
 
-              <p className="text-sm text-gray-600 line-clamp-3">
+              <p className="line-clamp-3">
                 {recipe.summary.replace(/<[^>]+>/g, "")}
               </p>
 
@@ -235,10 +233,10 @@ const RecipeList = () => {
                   View Recipe
                 </a>
 
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-4 cursor-help">
                   {recipe.glutenFree && (
                     <span
-                      className="h-9 w-9 rounded-full bg-gray-200 p-1 flex justify-center items-center"
+                      className="h-6 w-6 rounded-full bg-neutral-content shadow-sm p-1 flex justify-center items-center"
                       title="Gluten Free"
                     >
                       <img src="/images/gluten-free.png" alt="gluten-free" />
@@ -246,7 +244,7 @@ const RecipeList = () => {
                   )}
                   {recipe.vegan && (
                     <span
-                      className="h-9 w-9 text-sm rounded-full bg-gray-200 p-1 flex justify-center items-center"
+                      className="h-6 w-6 text-sm rounded-full bg-neutral-content shadow-sm p-1 flex justify-center items-center"
                       title="Vegan"
                     >
                       <img src="/images/vegan.png" alt="vegan" className="" />
@@ -254,7 +252,7 @@ const RecipeList = () => {
                   )}
                   {recipe.vegetarian && (
                     <span
-                      className="h-9 w-9 text-sm rounded-full bg-gray-200 p-1 flex justify-center items-center"
+                      className="h-6 w-6 text-sm rounded-full bg-neutral-content shadow-sm p-1 flex justify-center items-center"
                       title="Vegetarian"
                     >
                       <img src="/images/vegetarian.png" alt="vegetarian" />

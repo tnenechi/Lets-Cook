@@ -1,6 +1,7 @@
 import { Form, Link } from "react-router";
 import api from "../api/client";
 import { useAuth } from "../context/AuthContext";
+import ThemeController from "./ThemeController";
 
 const Navbar = () => {
   const { user, setUser } = useAuth();
@@ -15,21 +16,18 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar bg-base-100 shadow-sm justify-evenly items-center">
+    <div className="navbar bg-base-100  shadow-sm justify-evenly items-center">
       {/* LOGO */}
       <div>
-        <Link
-          to="/"
-          className="text-2xl text-gray-800 font-bold leading-tight shadow-2xl flex items-center gap-1"
-        >
+        <Link to="/" className="text-base-content flex items-center gap-1">
           <img src="/images/chef2.png" alt="" className="w-9 h-9" />
-          Let's Cook!
+          <h2>Let's Cook!</h2>
         </Link>
       </div>
 
       {/* SEARCH */}
       <Form action="/search" className="flex gap-2 items-center">
-        <label className="input w-72 md:w-[30rem]">
+        <label className="input w-72 md:w-[30rem] bg-base-300 text-base-content">
           <svg
             className="h-[1em] opacity-50"
             xmlns="http://www.w3.org/2000/svg"
@@ -53,18 +51,12 @@ const Navbar = () => {
             placeholder="e.g: chicken, tomato, cream, pasta"
           />
         </label>
-        {/* <button type="submit" className="btn btn-secondary">
-          Find recipes
-        </button> */}
       </Form>
 
       {/* LOGIN */}
-      <div className="">
+      <div className="flex items-center justify-center gap-4">
         {!user ? (
-          <Link
-            to="/login"
-            className="btn btn-primary btn-outline text-primary-content"
-          >
+          <Link to="/login" className="btn btn-primary text-primary-content">
             Log In
           </Link>
         ) : (
@@ -73,6 +65,7 @@ const Navbar = () => {
               tabIndex={0}
               role="button"
               className="btn btn-ghost btn-circle avatar"
+              title="You"
             >
               <div className="w-10 rounded-full">
                 <img alt="profile" src="/images/chef.png" />
@@ -97,6 +90,7 @@ const Navbar = () => {
             </ul>
           </div>
         )}
+        <ThemeController />
       </div>
     </div>
   );

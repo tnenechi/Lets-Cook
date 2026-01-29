@@ -2,8 +2,79 @@
 
 @plugin "daisyui" {
   themes:
-    cupcake --default,
-    coffee;
+    forest --default,
+    garden;
+}
+
+@theme {
+  --font-boska: "Boska", serif;
+
+  --text-p: 1rem;
+  --text-p--line-height: 1.6;
+  --tracking-p: 0.03em;
+  --font-weight-p: 400;
+
+  --text-small: 0.81rem;
+  --text-small--line-height: 1.65;
+  --tracking-small: 0.03em;
+  --font-weight-p: 400;
+
+  --text-h1: 3.16rem;
+  --text-h1--line-height: 1.5;
+  --tracking--h1: 0.01em;
+  --font-weight-h1: 800;
+
+  --text-h2: 1.78rem;
+  --text-h2--line-height: 1.55;
+  --tracking--h2: 0.02em;
+  --font-weight-h2: 500;
+
+  --text-h3: 1.33rem;
+  --text-h3--line-height: 1.6;
+  --tracking--h3: 0.025em;
+  --font-weight-h3: 500;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-boska);
+  }
+
+  body,
+  p {
+    font-size: var(--text-p);
+    line-height: var(--text-p--line-height);
+    letter-spacing: var(--tracking-p);
+    font-weight: var(--font-weight-p);
+  }
+
+  small {
+    font-size: var(--text-small);
+    line-height: var(--text-small--line-height);
+    letter-spacing: var(--tracking-small);
+    font-weight: var(--font-weight-p);
+  }
+
+  h1 {
+    font-size: var(--text-h1);
+    line-height: var(--text-h1--line-height);
+    letter-spacing: var(--tracking--h1);
+    font-weight: var(--font-weight-h1);
+  }
+
+  h2 {
+    font-size: var(--text-h2);
+    line-height: var(--text-h2--line-height);
+    letter-spacing: var(--tracking--h2);
+    font-weight: var(--font-weight-h2);
+  }
+
+  h3 {
+    font-size: var(--text-h3);
+    line-height: var(--text-h3--line-height);
+    letter-spacing: var(--tracking--h3);
+    font-weight: var(--font-weight-h3);
+  }
 }
 
 .carousel {

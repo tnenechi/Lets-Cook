@@ -73,8 +73,8 @@ const MySavedRecipes = () => {
           <h2>Recipes you loved...</h2>
         </div>
       ) : (
-        <div className="text-lg font-semibold leading-tight tracking-wide h-[70vh] flex justify-center items-center">
-          Enter your ingredients to find recipes for you. 😊
+        <div className="h-[70vh] flex justify-center items-center">
+          <h2> Enter your ingredients to find recipes for you. 😊</h2>
         </div>
       )}
 
@@ -82,7 +82,7 @@ const MySavedRecipes = () => {
         {recipes?.map((recipe) => (
           <div
             key={recipe.id}
-            className="w-full sm:w-[280px] bg-white rounded-xl overflow-hidden shadow-md flex flex-col"
+            className="w-full sm:w-[280px] bg-base-300 text-base-content  rounded-xl overflow-hidden shadow-md flex flex-col"
           >
             <div
               className="h-44 bg-center bg-cover relative"
@@ -91,7 +91,7 @@ const MySavedRecipes = () => {
               <div className="p-4 absolute bottom-0 right-0 w-full flex justify-end">
                 <button
                   onClick={() => handleClick(recipe.id)}
-                  className="btn btn-circle"
+                  className="btn btn-circle btn-neutral-content text-neutral"
                   title="Save recipe."
                 >
                   <svg
@@ -114,19 +114,17 @@ const MySavedRecipes = () => {
 
             <div className="p-4 flex flex-col gap-2 flex-1">
               <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-lg leading-tight text-gray-800">
-                  {recipe.title}
-                </h3>
+                <h3>{recipe.title}</h3>
 
                 <p
-                  className="text-sm whitespace-nowrap"
+                  className="whitespace-nowrap"
                   title={`Ready in ${recipe.readyInMinutes} minutes.`}
                 >
                   {recipe.readyInMinutes + " min"}
                 </p>
               </div>
 
-              <p className="text-sm text-gray-600 line-clamp-3">
+              <p className="line-clamp-3">
                 {recipe.summary.replace(/<[^>]+>/g, "")}
               </p>
 
@@ -140,10 +138,10 @@ const MySavedRecipes = () => {
                   View Recipe
                 </a>
 
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-4 cursor-help">
                   {recipe.glutenFree && (
                     <span
-                      className="h-9 w-9 rounded-full bg-gray-200 p-1 flex justify-center items-center"
+                      className="h-6 w-6 rounded-full bg-neutral-content shadow-sm p-1 flex justify-center items-center"
                       title="Gluten Free"
                     >
                       <img src="/images/gluten-free.png" alt="gluten-free" />
@@ -151,7 +149,7 @@ const MySavedRecipes = () => {
                   )}
                   {recipe.vegan && (
                     <span
-                      className="h-9 w-9 text-sm rounded-full bg-gray-200 p-1 flex justify-center items-center"
+                      className="h-6 w-6 text-sm rounded-full bg-neutral-content shadow-sm p-1 flex justify-center items-center"
                       title="Vegan"
                     >
                       <img src="/images/vegan.png" alt="vegan" className="" />
@@ -159,7 +157,7 @@ const MySavedRecipes = () => {
                   )}
                   {recipe.vegetarian && (
                     <span
-                      className="h-9 w-9 text-sm rounded-full bg-gray-200 p-1 flex justify-center items-center"
+                      className="h-6 w-6 text-sm rounded-full bg-neutral-content shadow-sm p-1 flex justify-center items-center"
                       title="Vegetarian"
                     >
                       <img src="/images/vegetarian.png" alt="vegetarian" />

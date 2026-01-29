@@ -33,13 +33,17 @@ export async function registerAction({ request }: ActionFunctionArgs) {
 
 export default function RegisterPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-100">
-      <div className="w-full max-w-5xl bg-white rounded-xl shadow-lg grid grid-cols-1 md:grid-cols-2 overflow-hidden">
-        {/* Gradient Column */}
-        <div className="hidden md:flex flex-col justify-between p-10 bg-base-200 text-base-content">
-          <div>
-            <p className="text-md opacity-80 mb-2">Let’s get started. 👨🏼‍🍳😊</p>
-            <h1 className="text-3xl font-bold mb-4">CREATE ACCOUNT</h1>
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="w-full max-w-5xl rounded-xl shadow-lg grid grid-cols-1 md:grid-cols-2 overflow-hidden">
+        {/* Left Column */}
+        <div
+          className="hidden md:flex flex-col justify-between p-10 bg-cover bg-center relative "
+          style={{ backgroundImage: "url('/images/chicken1.jpg')" }}
+        >
+          <div className="absolute inset-0 bg-neutral/40" />
+          <div className="z-10 text-white">
+            <h3 className="mb-2">Let’s get started. </h3>
+            <h1 className="mb-4">CREATE ACCOUNT</h1>
           </div>
           <div />
         </div>
@@ -47,12 +51,8 @@ export default function RegisterPage() {
         {/* Form Column */}
         <div className="flex items-center justify-center p-10">
           <div className="w-full max-w-sm">
-            <h2 className="text-2xl font-semibold mb-2 text-slate-800">
-              Register Account
-            </h2>
-            <p className="text-sm text-slate-500 mb-6">
-              Create your account to continue.
-            </p>
+            <h2 className=" mb-2">Register Account</h2>
+            <p className="mb-6">Create your account to continue.</p>
 
             <Form method="post" className="space-y-4">
               {/* EMAIL */}
@@ -171,9 +171,9 @@ export default function RegisterPage() {
               </button>
             </Form>
 
-            <p className="text-sm text-center text-slate-600 mt-4">
+            <p className="text-center mt-4">
               Already have an account?{" "}
-              <Link to="/login" className="text-blue-600 hover:underline">
+              <Link to="/login" className="text-info hover:underline">
                 Login
               </Link>
             </p>
