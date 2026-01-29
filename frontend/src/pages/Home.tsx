@@ -20,7 +20,7 @@ const Home = () => {
       <div className="hero-content text-neutral-content text-center">
         <div className="max-w-md">
           <h1 className="md:whitespace-nowrap">Cook More. Waste Less.</h1>
-          <p className="mb-5">Discover meals with what's on hand.</p>
+          <h3 className="mb-5">Discover meals with what's on hand.</h3>
           {!user ? (
             <Link
               to="/register"
