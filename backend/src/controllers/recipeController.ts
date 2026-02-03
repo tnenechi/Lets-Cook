@@ -6,15 +6,10 @@ import {
 } from "../externalServices/recipe.service.js";
 import { prisma } from "../../lib/prisma.js";
 
-type Recipe = {
-  id: number;
-  image: string;
-};
-
 type RecipeInfo = {
   id: number;
   title: string;
-  image: string;
+  imageUrl: string;
   readyInMinutes: number;
   sourceUrl: string;
   summary: string;
@@ -34,7 +29,7 @@ export const searchRecipes = async (req: Request, res: Response) => {
     .split(",")
     .map((ing) => ing.trim().toLowerCase());
 
-  const recipes: Recipe[] = await searchRecipesByIngredients(ingredients);
+  const recipes: RecipeInfo[] = await searchRecipesByIngredients(ingredients);
 
   const recipeIds = recipes.map((recipe) => recipe.id);
 
@@ -47,6 +42,8 @@ export const saveRecipe = async (req: Request, res: Response) => {
   const user = (req as any).user;
   const recipeData = req.body;
 
+  console.log("****RECIPE DATA: \n", recipeData);
+
   //save the recipe if it doesn't exist
   const savedRecipe = await prisma.recipe.upsert({
     where: { externalId: recipeData.id },
@@ -54,7 +51,7 @@ export const saveRecipe = async (req: Request, res: Response) => {
     create: {
       externalId: recipeData.id,
       title: recipeData.title,
-      imageUrl: recipeData.image,
+      imageUrl: recipeData.imageUrl,
       readyInMinutes: recipeData.readyInMinutes,
       sourceUrl: recipeData.sourceUrl,
       summary: recipeData.summary,
@@ -64,20 +61,22 @@ export const saveRecipe = async (req: Request, res: Response) => {
     },
   });
 
-  //link the recipe to the user
-  await prisma.savedRecipe.upsert({
-    where: {
-      userId_recipeId: {
-        userId: user.id,
-        recipeId: savedRecipe.id,
+  if (savedRecipe.externalId) {
+    //link the recipe to the user
+    await prisma.savedRecipe.upsert({
+      where: {
+        userId_recipeId: {
+          userId: user.id,
+          recipeId: savedRecipe.externalId,
+        },
       },
-    },
-    update: {},
-    create: {
-      userId: user.id,
-      recipeId: savedRecipe.id,
-    },
-  });
+      update: {},
+      create: {
+        userId: user.id,
+        recipeId: savedRecipe.externalId,
+      },
+    });
+  }
 
   return Send.success(res, { message: "Recipe saved successfully" });
 };
@@ -97,39 +96,41 @@ export const getSavedRecipes = async (req: Request, res: Response) => {
   return Send.success(res, { savedRecipes });
 };
 
-export const getSavedRecipeById = async (req: Request, res: Response) => {
-  const user = (req as any).user;
-  const recipeId = req.params.id;
-
-  const savedRecipe = await prisma.savedRecipe.findUnique({
-    where: {
-      userId_recipeId: {
-        userId: user.id,
-        recipeId: recipeId as string,
-      },
-    },
-    include: {
-      recipe: true,
-    },
-  });
-  if (!savedRecipe) {
-    return Send.error(res, "Recipe not found", 404);
-  }
-  return Send.success(res, { savedRecipe });
-};
-
 export const deleteSavedRecipe = async (req: Request, res: Response) => {
   const user = (req as any).user;
-  const recipeId = req.params.id;
+  const recipeId = Number(req.params.recipeId);
+
+  console.log("*******THE RECIPE ID: \n", recipeId);
 
   await prisma.savedRecipe.delete({
     where: {
       userId_recipeId: {
         userId: user.id,
-        recipeId: recipeId as string,
+        recipeId: recipeId,
       },
     },
   });
 
   return Send.success(res, { message: "Recipe deleted successfully" });
 };
+
+// export const getSavedRecipeById = async (req: Request, res: Response) => {
+//   const user = (req as any).user;
+//   const recipeId = Number(req.params.id);
+
+//   const savedRecipe = await prisma.savedRecipe.findUnique({
+//     where: {
+//       userId_recipeId: {
+//         userId: user.id,
+//         recipeId: recipeId,
+//       },
+//     },
+//     include: {
+//       recipe: true,
+//     },
+//   });
+//   if (!savedRecipe) {
+//     return Send.error(res, "Recipe not found", 404);
+//   }
+//   return Send.success(res, { savedRecipe });
+// };

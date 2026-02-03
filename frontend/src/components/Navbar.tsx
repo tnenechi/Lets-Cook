@@ -1,4 +1,4 @@
-import { Form, Link } from "react-router";
+import { Form, Link, redirect } from "react-router";
 import api from "../api/client";
 import { useAuth } from "../context/AuthContext";
 import ThemeController from "./ThemeController";
@@ -10,24 +10,25 @@ const Navbar = () => {
     try {
       await api.post("/auth/logout");
       setUser(null);
+      return redirect("/");
     } catch (err) {
       console.error("Logout failed", err);
     }
   };
 
   return (
-    <div className="navbar bg-base-100  shadow-sm justify-evenly items-center">
+    <div className="navbar bg-base-100  shadow-sm justify-between items-center px-9">
       {/* LOGO */}
       <div>
         <Link to="/" className="text-base-content flex items-center gap-1">
-          <img src="/images/chef2.png" alt="" className="w-9 h-9" />
-          <h2>Let's Cook!</h2>
+          <h2>Let's Cook</h2>
+          <img src="/images/chef2.png" alt="" className="w-7 h-7" />
         </Link>
       </div>
 
       {/* SEARCH */}
       <Form action="/search" className="flex gap-2 items-center">
-        <label className="input w-72 md:w-[30rem] bg-base-300 text-base-content">
+        <label className="input w-72 md:w-[30rem] bg-neutral text-neutral-content">
           <svg
             className="h-[1em] opacity-50"
             xmlns="http://www.w3.org/2000/svg"
@@ -54,7 +55,7 @@ const Navbar = () => {
       </Form>
 
       {/* LOGIN */}
-      <div className="flex items-center justify-center gap-4">
+      <div className="flex items-center justify-center gap-5">
         {!user ? (
           <Link to="/login" className="btn btn-primary text-primary-content">
             Log In
@@ -68,7 +69,7 @@ const Navbar = () => {
               title="You"
             >
               <div className="w-10 rounded-full">
-                <img alt="profile" src="/images/chef.png" />
+                <img alt="profile" src="/images/profile.png" />
               </div>
             </div>
             <ul
@@ -78,7 +79,7 @@ const Navbar = () => {
               <li>
                 <a className="justify-between">
                   Profile
-                  <span className="badge">New</span>
+                  <span className="badge badge-info badge-soft badge-sm">Coming</span>
                 </a>
               </li>
               <li>

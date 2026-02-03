@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router";
 import api from "../api/client";
 import toast from "react-hot-toast";
 
 const MySavedRecipes = () => {
   type Recipe = {
-    id: number;
+    externalId: number;
     title: string;
     image: string;
     readyInMinutes: number;
@@ -16,22 +15,30 @@ const MySavedRecipes = () => {
     vegetarian: boolean;
   };
 
-  const [recipes, setRecipes] = useState<Recipe[]>();
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [unsaved, setUnSaved] = useState<number[]>([]);
-
-  const [searchParams] = useSearchParams();
-  const ingredients = searchParams.get("ingredients") || "";
 
   // *** DATA FETCH ***
   useEffect(() => {
-    if (!ingredients) return;
-
     const handleGetSaved = async () => {
       try {
         const { data } = await api.get("/recipes/saved");
 
-        console.log("Returned from /recipes/search", data);
-        setRecipes(data.data);
+        console.log("Returned from /recipes/saved", data.data.savedRecipes);
+
+        const normalizedRecipes = data.data.savedRecipes.map((item: any) => ({
+          externalId: item.recipe.externalId,
+          title: item.recipe.title,
+          image: item.recipe.imageUrl,
+          readyInMinutes: item.recipe.readyInMinutes,
+          sourceUrl: item.recipe.sourceUrl,
+          summary: item.recipe.summary ?? "",
+          glutenFree: item.recipe.glutenFree,
+          vegan: item.recipe.vegan,
+          vegetarian: item.recipe.vegetarian,
+        }));
+
+        setRecipes(normalizedRecipes);
       } catch (error) {
         toast.error("Something went wrong. Please try again");
         console.error("Search failed", error);
@@ -39,27 +46,49 @@ const MySavedRecipes = () => {
     };
 
     handleGetSaved();
+  }, []);
 
-    return () => {
-      // Delete recipes when component unmounts
-      unsaved.forEach((unsavedId) => {
-        handleDeleteRecipe(unsavedId);
-      });
-    };
-  }, [ingredients]);
-
-  const handleClick = (recipeId: number) => {
+  const handleClick = async (recipeId: number) => {
     if (unsaved.includes(recipeId)) {
       setUnSaved((prev) => prev.filter((id) => id !== recipeId));
-    } else {
-      setUnSaved((prev) => [...prev, recipeId]);
+
+      const recipe = recipes.find((r) => r.externalId === recipeId);
+      if (recipe) {
+        await handleSaveRecipe(recipe);
+      }
+      return;
+    }
+
+    setUnSaved((prev) => [...prev, recipeId]);
+    await handleDeleteRecipe(recipeId);
+  };
+
+  const handleSaveRecipe = async (recipe: Recipe) => {
+    try {
+      await api.post("/recipes/saved", {
+        id: recipe.externalId,
+        title: recipe.title,
+        imageUrl: recipe.image,
+        readyInMinutes: recipe.readyInMinutes,
+        sourceUrl: recipe.sourceUrl,
+        summary: recipe.summary,
+        glutenFree: recipe.glutenFree,
+        vegan: recipe.vegan,
+        vegetarian: recipe.vegetarian,
+      });
+
+      console.log("Recipe saved: ", recipe);
+      toast.success("Recipe saved");
+    } catch (error) {
+      toast.error("Something went wrong. Please try again");
+      console.error("Search failed", error);
     }
   };
 
   const handleDeleteRecipe = async (recipeId: number) => {
     try {
-      const response = await api.delete(`/recipes/saved/${recipeId}`);
-      toast.success("Recipe deleted successfully");
+      await api.delete(`/recipes/saved/${recipeId}`);
+      toast.success("Recipe unsaved");
     } catch (error) {
       toast.error("Something went wrong. Please try again");
       console.error("Delete recipe failed", error);
@@ -68,9 +97,9 @@ const MySavedRecipes = () => {
 
   return (
     <div className="px-9 pb-20">
-      {recipes ? (
-        <div className="py-4">
-          <h2>Recipes you loved...</h2>
+      {recipes.length > 0 ? (
+        <div className="pt-4 pb-12 flex w-full justify-between">
+          <p className="">Your saved recipes...</p>
         </div>
       ) : (
         <div className="h-[70vh] flex justify-center items-center">
@@ -81,8 +110,8 @@ const MySavedRecipes = () => {
       <div className="flex flex-wrap gap-6 md:gap-3 justify-center md:justify-start">
         {recipes?.map((recipe) => (
           <div
-            key={recipe.id}
-            className="w-full sm:w-[280px] bg-base-300 text-base-content  rounded-xl overflow-hidden shadow-md flex flex-col"
+            key={recipe.externalId}
+            className="w-full sm:w-[280px] bg-neutral text-neutral-content  rounded-xl overflow-hidden shadow-md flex flex-col"
           >
             <div
               className="h-44 bg-center bg-cover relative"
@@ -90,13 +119,13 @@ const MySavedRecipes = () => {
             >
               <div className="p-4 absolute bottom-0 right-0 w-full flex justify-end">
                 <button
-                  onClick={() => handleClick(recipe.id)}
+                  onClick={() => handleClick(recipe.externalId)}
                   className="btn btn-circle btn-neutral-content text-neutral"
                   title="Save recipe."
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    fill={unsaved.includes(recipe.id) ? "none" : "red"}
+                    fill={unsaved.includes(recipe.externalId) ? "none" : "red"}
                     viewBox="0 0 24 24"
                     strokeWidth="2.5"
                     stroke="currentColor"
@@ -117,7 +146,7 @@ const MySavedRecipes = () => {
                 <h3>{recipe.title}</h3>
 
                 <p
-                  className="whitespace-nowrap"
+                  className="whitespace-nowrap text-sm text-accent"
                   title={`Ready in ${recipe.readyInMinutes} minutes.`}
                 >
                   {recipe.readyInMinutes + " min"}

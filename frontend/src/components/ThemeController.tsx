@@ -3,7 +3,7 @@ const ThemeController = () => {
     <div>
       <label className="swap swap-rotate">
         {/* this hidden checkbox controls the state */}
-        <input type="checkbox" className="theme-controller" value="garden" />
+        <input type="checkbox" className="theme-controller" value="pastel" />
 
         {/* sun icon */}
         <svg
