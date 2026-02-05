@@ -13,7 +13,7 @@ export async function loginAction({ request }: ActionFunctionArgs) {
   const password = String(formData.get("password") || "");
 
   try {
-    const res = await api.post("/auth/login", { email, password });
+    await api.post("/auth/login", { email, password });
 
     return redirect("/");
   } catch (err: any) {
