@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import type { Request, Response, NextFunction } from "express";
 import { Send } from "../utils/response.js";
-import { prisma } from "../../lib/prisma.js";
+import { prisma } from "../lib/prisma.js";
 
 export const authenticateUser = async (
   req: Request,

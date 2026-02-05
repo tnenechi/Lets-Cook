@@ -27,6 +27,7 @@ export async function registerAction({ request }: ActionFunctionArgs) {
     return redirect("/login");
   } catch (err: any) {
     toast.error(err.response?.data?.message);
+    console.log("Registration error: ", err);
     return { error: err.response?.data?.data || "Registration failed" };
   }
 }

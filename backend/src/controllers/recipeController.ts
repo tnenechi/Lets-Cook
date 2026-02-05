@@ -4,7 +4,7 @@ import {
   GetRecipeInformationBulk,
   searchRecipesByIngredients,
 } from "../externalServices/recipe.service.js";
-import { prisma } from "../../lib/prisma.js";
+import { prisma } from "../lib/prisma.js";
 
 type RecipeInfo = {
   id: number;

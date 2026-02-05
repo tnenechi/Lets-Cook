@@ -1,4 +1,4 @@
-import { prisma } from "../../lib/prisma.js";
+import { prisma } from "../lib/prisma.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import type { Request, Response } from "express";
@@ -74,7 +74,11 @@ const login = async (req: Request, res: Response) => {
       maxAge: 15 * 60 * 1000, // 15 minutes
     });
 
-    return Send.success(res, { user: (req as any).user }, "Login successful");
+    return Send.success(
+      res,
+      { user: { id: user.id, email: user.email } },
+      "Login successful",
+    );
   } catch (error) {
     console.error("Login error:", error);
     return Send.error(res, "Login failed");
@@ -124,8 +128,9 @@ const refreshToken = async (req: Request, res: Response) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
+      maxAge: 15 * 60 * 1000, // 15 minutes
     });
+
     return Send.success(res, null, "Access token refreshed");
   } catch (error) {
     console.error("Refresh token error:", error);
