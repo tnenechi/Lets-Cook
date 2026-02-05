@@ -1,10 +1,8 @@
 import { BiLogoGmail } from "react-icons/bi";
-import { FaChevronUp, FaLinkedinIn } from "react-icons/fa6";
+import { FaLinkedinIn } from "react-icons/fa6";
 import { TiSocialGithub } from "react-icons/ti";
 
-type Props = {};
-
-const Footer = (props: Props) => {
+const Footer = () => {
   return (
     <div
       className="relative w-full h-[30vh]"
