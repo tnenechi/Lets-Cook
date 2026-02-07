@@ -1,7 +1,3 @@
-import { BiLogoGmail } from "react-icons/bi";
-import { FaLinkedinIn } from "react-icons/fa6";
-import { TiSocialGithub } from "react-icons/ti";
-
 const Footer = () => {
   return (
     <div
