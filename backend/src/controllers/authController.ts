@@ -1,12 +1,30 @@
 import { prisma } from "../lib/prisma.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import type { Request, Response } from "express";
+import type { CookieOptions, Request, Response } from "express";
 import {
   generateAccessToken,
   generateRefreshToken,
 } from "../utils/generateToken.js";
 import { Send } from "../utils/response.js";
+import ms from "ms";
+
+const JWT_REFRESH_EXPIRES_IN = process.env.REFRESH_TOKEN_EXPIRES_IN ?? "1d";
+const JWT_ACCESS_EXPIRES_IN = process.env.ACCESS_TOKEN_EXPIRES_IN ?? "15m";
+
+const accessTokenCookieConfig: CookieOptions = {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  maxAge: ms(JWT_ACCESS_EXPIRES_IN as ms.StringValue),
+};
+
+const refreshTokenCookieConfig: CookieOptions = {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  maxAge: ms(JWT_REFRESH_EXPIRES_IN as ms.StringValue),
+};
 
 const register = async (req: Request, res: Response) => {
   try {
@@ -60,19 +78,9 @@ const login = async (req: Request, res: Response) => {
     const accessToken = generateAccessToken(user.id);
     const refreshToken = generateRefreshToken(user.id);
 
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
-    });
+    res.cookie("refreshToken", refreshToken, refreshTokenCookieConfig);
 
-    res.cookie("accessToken", accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 15 * 60 * 1000, // 15 minutes
-    });
+    res.cookie("accessToken", accessToken, accessTokenCookieConfig);
 
     return Send.success(
       res,
@@ -105,6 +113,8 @@ const logOut = (req: Request, res: Response) => {
 
 const refreshToken = async (req: Request, res: Response) => {
   const refreshToken = req.cookies.refreshToken;
+
+  // No refresh token
   if (!refreshToken) {
     return Send.unauthorized(res, "No refresh token provided");
   }
@@ -118,18 +128,19 @@ const refreshToken = async (req: Request, res: Response) => {
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
     });
+
+    // No user
     if (!user) {
       return Send.unauthorized(res, "User not found");
     }
 
+    // Generate tokens
     const newAccessToken = generateAccessToken(user.id);
+    const newRefreshToken = generateRefreshToken(user.id);
 
-    res.cookie("accessToken", newAccessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 15 * 60 * 1000, // 15 minutes
-    });
+    res.cookie("refreshToken", newRefreshToken, refreshTokenCookieConfig);
+
+    res.cookie("accessToken", newAccessToken, accessTokenCookieConfig);
 
     return Send.success(res, null, "Access token refreshed");
   } catch (error) {

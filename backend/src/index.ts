@@ -9,9 +9,20 @@ import recipeRoutes from "./routes/recipeRoutes.js";
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://lets-cook.onrender.com",
+];
+
 app.use(
   cors({
-    origin: "https://lets-cook.onrender.com",
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   }),
 );

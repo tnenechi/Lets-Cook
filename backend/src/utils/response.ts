@@ -43,4 +43,12 @@ export class Send {
       data: message,
     });
   }
+
+  static invalidToken(res: Response, message = "TOKEN_EXPIRED") {
+    return res.status(401).json({
+      success: false,
+      message,
+      data: message,
+    });
+  }
 }

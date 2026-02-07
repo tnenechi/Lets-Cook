@@ -8,21 +8,19 @@ export const authenticateUser = async (
   res: Response,
   next: NextFunction,
 ) => {
-  let token;
+  // Extract the token
+  let accessToken = req.cookies?.accessToken;
 
-  if (req.cookies?.accessToken) {
-    token = req.cookies.accessToken;
-  } else if (req.headers.authorization?.startsWith("Bearer ")) {
-    token = req.headers.authorization.split(" ")[1];
+  if (!accessToken) {
+    return Send.unauthorized(res, "accessToken missing");
   }
 
-  if (!token) {
-    return Send.unauthorized(res, "Token missing");
-  }
-
-  //verify the token
+  //verify the accessToken
   try {
-    const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET as string);
+    const decoded = jwt.verify(
+      accessToken,
+      process.env.JWT_ACCESS_SECRET as string,
+    );
 
     const userId = (decoded as { userId: string }).userId;
     const user = await prisma.user.findUnique({
@@ -43,7 +41,6 @@ export const authenticateUser = async (
     (req as any).user = user;
     next();
   } catch (error) {
-    console.error("Authentication error:", error);
-    return Send.unauthorized(res, "Invalid or expired token");
+    return Send.invalidToken(res, "Access token expired");
   }
 };

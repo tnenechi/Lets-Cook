@@ -12,31 +12,17 @@ const Footer = () => {
     >
       <footer className="footer h-[30vh] sm:footer-horizontal bg-base-100 text-base-content items-center justify-center p-4 fixed bottom-0">
         <div className="bottom flex flex-col justify-center items-center gap-2 ">
-          <div id="socials" className="flex gap-4">
+          <p>
+            &copy; {new Date().getFullYear()} Let's Cook - Designed & Developed
+            by{" "}
             <a
-              href="mailto:enechithony@gmail.com"
+              href="#"
               target="_blank"
-              className="bg-[#909090]  p-2 rounded-full flex justify-center items-center"
+              rel="noopener noreferrer"
+              className="inline-block text-info transition-transform duration-200 hover:scale-95"
             >
-              <BiLogoGmail className="text-black h-7 w-7" />
+              Thony.
             </a>
-            <a
-              href="https://github.com/tnenechi"
-              target="_blank"
-              className="bg-[#909090] shadow-2xl p-2 rounded-full flex justify-center items-center"
-            >
-              <TiSocialGithub className="text-black h-7 w-7" />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/thony-enechi/"
-              target="_blank"
-              className="bg-[#909090] shadow-2xl p-2 rounded-full flex justify-center items-center"
-            >
-              <FaLinkedinIn className="text-black h-7 w-7" />
-            </a>
-          </div>
-          <p className="">
-            Thony&copy; {new Date().getFullYear()} - All right reserved
           </p>
         </div>
       </footer>

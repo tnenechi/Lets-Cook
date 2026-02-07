@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import api from "../api/client";
 import toast from "react-hot-toast";
+import axios from "axios";
+import { redirect } from "react-router";
 
 const MySavedRecipes = () => {
   type Recipe = {
@@ -40,8 +42,9 @@ const MySavedRecipes = () => {
 
         setRecipes(normalizedRecipes);
       } catch (error) {
-        toast.error("Something went wrong. Please try again");
+        toast.error("Something went wrong.");
         console.error("Search failed", error);
+        redirect("/");
       }
     };
 
@@ -80,8 +83,12 @@ const MySavedRecipes = () => {
       console.log("Recipe saved: ", recipe);
       toast.success("Recipe saved");
     } catch (error) {
-      toast.error("Something went wrong. Please try again");
-      console.error("Search failed", error);
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        toast.error("Please log in.");
+        redirect("/login");
+      } else {
+        toast.error("Something went wrong");
+      }
     }
   };
 
@@ -90,13 +97,17 @@ const MySavedRecipes = () => {
       await api.delete(`/recipes/saved/${recipeId}`);
       toast.success("Recipe unsaved");
     } catch (error) {
-      toast.error("Something went wrong. Please try again");
-      console.error("Delete recipe failed", error);
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        toast.error("Please log in.");
+        redirect("/login");
+      } else {
+        toast.error("Something went wrong");
+      }
     }
   };
 
   return (
-    <div className="px-9 pb-20">
+    <div className="px-x-xs sm:px-x-sm pb-20">
       {recipes.length > 0 ? (
         <div className="pt-4 pb-12 flex w-full justify-between">
           <p className="">Your saved recipes...</p>

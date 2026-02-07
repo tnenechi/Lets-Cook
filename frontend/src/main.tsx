@@ -5,7 +5,7 @@ import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import Home from "./pages/Home.tsx";
 import RecipeList from "./pages/RecipeList.tsx";
-import LoginPage, { loginAction } from "./pages/LoginPage.tsx";
+import LoginPage from "./pages/LoginPage.tsx";
 import RegisterPage, { registerAction } from "./pages/RegisterPage.tsx";
 import { Toaster } from "react-hot-toast";
 import App from "./App.tsx";
@@ -20,7 +20,6 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <LoginPage />,
-        action: loginAction,
       },
       {
         path: "/register",

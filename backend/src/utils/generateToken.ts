@@ -20,6 +20,7 @@ export const generateAccessToken = (userId: string) => {
   return token;
 };
 
+
 export const generateRefreshToken = (userId: string) => {
   const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
 

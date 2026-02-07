@@ -3,7 +3,7 @@
 @plugin "daisyui" {
   themes:
     forest --default,
-    pastel;
+    retro;
 }
 
 @theme {
@@ -20,20 +20,22 @@
   --tracking-small: 0.03em;
   --font-weight-p: 400;
 
-  --text-h1: 5.61rem;
+  --text-h1: clamp(4rem, 10vw, 5.61rem);
   --text-h1--line-height: 1.5;
   --tracking--h1: 0.01em;
   --font-weight-h1: 800;
 
-  --text-h2: 1.78rem;
+  --text-h2: clamp(0.78rem, 5vw, 1.78rem);
   --text-h2--line-height: 1.55;
   --tracking--h2: 0.02em;
   --font-weight-h2: 500;
 
-  --text-h3: 1.33rem;
   --text-h3--line-height: 1.6;
   --tracking--h3: 0.025em;
   --font-weight-h3: 500;
+
+  --spacing-x-xs: 1.25rem;
+  --spacing-x-sm: 2.25rem;
 }
 
 @layer base {
@@ -74,7 +76,6 @@
 
   h3 {
     font-family: var(--font-headings);
-    font-size: var(--text-h3);
     line-height: var(--text-h3--line-height);
     letter-spacing: var(--tracking--h3);
     font-weight: var(--font-weight-h3);
