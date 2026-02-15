@@ -9,16 +9,17 @@ const Navbar = () => {
   const { user, refreshUser } = useAuth();
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
-  const mediaQuery = window.matchMedia("(max-width: 768px)");
-  let isMobile = mediaQuery.matches;
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 640);
 
   useEffect(() => {
-    function handleResize(e: MediaQueryListEvent) {
-      isMobile = e.matches;
-    }
+    const mediaQuery = window.matchMedia("(max-width: 640px)");
+
+    const handleResize = (e: MediaQueryListEvent) => setIsMobile(e.matches);
 
     mediaQuery.addEventListener("change", handleResize);
-  });
+
+    return () => mediaQuery.removeEventListener("change", handleResize);
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -41,7 +42,7 @@ const Navbar = () => {
         </div>
 
         {/* DESKTOP SEARCH */}
-        <SearchBar />
+        {!isMobile && <SearchBar />}
 
         {/* RIGHT SIDE */}
         <div className="flex items-center justify-center gap-2 sm:gap-5">
@@ -128,7 +129,7 @@ const Navbar = () => {
 
 const SearchBar = () => {
   return (
-    <Form action="/search" className="hidden sm:flex gap-2 items-center">
+    <Form action="/search" className="flex gap-2 items-center">
       <label className="input w-72 md:w-[30rem] bg-base-200 text-base-content">
         <svg
           className="h-[1em] opacity-50"
