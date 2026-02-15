@@ -51,4 +51,16 @@ export class Send {
       data: message,
     });
   }
+
+  static dailyQuotaReached(
+    res: Response,
+    data: any,
+    message = "Daily quota reached",
+  ) {
+    return res.status(402).json({
+      success: false,
+      message,
+      data: data,
+    });
+  }
 }

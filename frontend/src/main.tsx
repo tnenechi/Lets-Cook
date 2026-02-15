@@ -6,10 +6,11 @@ import { RouterProvider } from "react-router/dom";
 import Home from "./pages/Home.tsx";
 import RecipeList from "./pages/RecipeList.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
-import RegisterPage, { registerAction } from "./pages/RegisterPage.tsx";
+import RegisterPage from "./pages/RegisterPage.tsx";
 import { Toaster } from "react-hot-toast";
 import App from "./App.tsx";
 import MySavedRecipes from "./pages/MySavedRecipes.tsx";
+import DummyPage from "./pages/DummyPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -24,9 +25,9 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <RegisterPage />,
-        action: registerAction,
       },
       { path: "/my-recipes", element: <MySavedRecipes /> },
+      { path: "/dummy-page", element: <DummyPage /> },
     ],
   },
 ]);

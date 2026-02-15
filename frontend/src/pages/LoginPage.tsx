@@ -35,11 +35,10 @@ export default function LoginPage() {
         {/* Left Column */}
         <div
           className="hidden md:flex flex-col justify-between p-10 bg-cover bg-center relative"
-          style={{ backgroundImage: "url('/images/chicken2.jpg')" }}
+          style={{ backgroundImage: "url('/images/login.jpg')" }}
         >
-          <div className="absolute inset-0 bg-neutral/40" />
+          <div className="absolute inset-0 bg-neutral/20" />
           <div className="z-10 text-white">
-            <h1 className="mb-4">WELCOME BACK</h1>
             <h3 className="mb-2">Nice to see you again! 😊</h3>
           </div>
         </div>

@@ -5,7 +5,7 @@ const API_BASE = "https://api.spoonacular.com";
 export const searchRecipesByIngredients = async (ingredients: string[]) => {
   const ingredientString = ingredients.join(",");
 
-  const { data } = await axios.get(`${API_BASE}/recipes/findByIngredients`, {
+  const response = await axios.get(`${API_BASE}/recipes/findByIngredients`, {
     params: {
       ingredients: ingredientString,
       number: 6,
@@ -13,7 +13,10 @@ export const searchRecipesByIngredients = async (ingredients: string[]) => {
       apiKey: process.env.SPOONACULAR_API_KEY,
     },
   });
-  return data;
+  return {
+    data: response.data,
+    headers: response.headers,
+  };
 };
 
 export const GetRecipeInformationBulk = async (ids: number[]) => {

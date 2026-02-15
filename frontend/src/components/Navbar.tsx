@@ -2,12 +2,23 @@ import { Form, Link, redirect } from "react-router";
 import api from "../api/client";
 import { useAuth } from "../context/AuthContext";
 import ThemeController from "./ThemeController";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdClose } from "react-icons/md";
 
 const Navbar = () => {
   const { user, refreshUser } = useAuth();
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+
+  const mediaQuery = window.matchMedia("(max-width: 768px)");
+  let isMobile = mediaQuery.matches;
+
+  useEffect(() => {
+    function handleResize(e: MediaQueryListEvent) {
+      isMobile = e.matches;
+    }
+
+    mediaQuery.addEventListener("change", handleResize);
+  });
 
   const handleLogout = async () => {
     try {
@@ -24,39 +35,13 @@ const Navbar = () => {
       <nav className="navbar bg-base-100  shadow-sm justify-between items-center px-x-xs sm:px-x-sm ">
         {/* LOGO */}
         <div>
-          <Link to="/" className="text-base-content flex items-center gap-1">
-            <h2>Let's Cook</h2>
-            <img src="/images/chef2.png" alt="" className="w-7 h-7" />
+          <Link to="/" className="text-base-content">
+            <h2 className="logo">Let's Cook</h2>
           </Link>
         </div>
 
         {/* DESKTOP SEARCH */}
-        <Form action="/search" className="hidden sm:flex gap-2 items-center">
-          <label className="input w-72 md:w-[30rem] bg-neutral text-neutral-content">
-            <svg
-              className="h-[1em] opacity-50"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-            >
-              <g
-                strokeLinejoin="round"
-                strokeLinecap="round"
-                strokeWidth="2.5"
-                fill="none"
-                stroke="currentColor"
-              >
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.3-4.3"></path>
-              </g>
-            </svg>
-            <input
-              type="search"
-              required
-              name="ingredients"
-              placeholder="e.g: chicken, tomato, cream, pasta"
-            />
-          </label>
-        </Form>
+        <SearchBar />
 
         {/* RIGHT SIDE */}
         <div className="flex items-center justify-center gap-2 sm:gap-5">
@@ -134,23 +119,41 @@ const Navbar = () => {
             <MdClose />
           </button>
 
-          <Form
-            action="/search"
-            className="w-full max-w-md flex items-center gap-3"
-          >
-            <label className="input w-full bg-neutral text-neutral-content">
-              <input
-                autoFocus
-                type="search"
-                required
-                name="ingredients"
-                placeholder="e.g: chicken, tomato, cream, pasta"
-              />
-            </label>
-          </Form>
+          <SearchBar />
         </div>
       )}
     </>
+  );
+};
+
+const SearchBar = () => {
+  return (
+    <Form action="/search" className="hidden sm:flex gap-2 items-center">
+      <label className="input w-72 md:w-[30rem] bg-base-200 text-base-content">
+        <svg
+          className="h-[1em] opacity-50"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+        >
+          <g
+            strokeLinejoin="round"
+            strokeLinecap="round"
+            strokeWidth="2.5"
+            fill="none"
+            stroke="currentColor"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </g>
+        </svg>
+        <input
+          type="search"
+          required
+          name="ingredients"
+          placeholder="e.g: chicken, tomato, cream, pasta"
+        />
+      </label>
+    </Form>
   );
 };
 

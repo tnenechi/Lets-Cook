@@ -109,7 +109,7 @@ const MySavedRecipes = () => {
   return (
     <div className="px-x-xs sm:px-x-sm pb-20">
       {recipes.length > 0 ? (
-        <div className="pt-4 pb-12 flex w-full justify-between">
+        <div className="p-4 mb-12 flex w-full justify-between shadow-md">
           <p className="">Your saved recipes...</p>
         </div>
       ) : (
@@ -122,7 +122,7 @@ const MySavedRecipes = () => {
         {recipes?.map((recipe) => (
           <div
             key={recipe.externalId}
-            className="w-full sm:w-[280px] bg-neutral text-neutral-content  rounded-xl overflow-hidden shadow-md flex flex-col"
+            className="w-full sm:w-[280px] bg-base-300 text-base-content  rounded-xl overflow-hidden shadow-md flex flex-col"
           >
             <div
               className="h-44 bg-center bg-cover relative"
@@ -157,7 +157,7 @@ const MySavedRecipes = () => {
                 <h3>{recipe.title}</h3>
 
                 <p
-                  className="whitespace-nowrap text-sm text-accent"
+                  className="whitespace-nowrap text-xs text-info cursor-pointer"
                   title={`Ready in ${recipe.readyInMinutes} minutes.`}
                 >
                   {recipe.readyInMinutes + " min"}
@@ -178,7 +178,7 @@ const MySavedRecipes = () => {
                   View Recipe
                 </a>
 
-                <div className="flex items-center gap-4 cursor-help">
+                <div className="flex items-center gap-4 cursor-pointer">
                   {recipe.glutenFree && (
                     <span
                       className="h-6 w-6 rounded-full bg-neutral-content shadow-sm p-1 flex justify-center items-center"

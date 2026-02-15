@@ -5,6 +5,11 @@ import {
   searchRecipesByIngredients,
 } from "../externalServices/recipe.service.js";
 import { prisma } from "../lib/prisma.js";
+import {
+  getRemainingTime,
+  isQuotaBlocked,
+  setQuotaResetTime,
+} from "../utils/quotaTracker.js";
 
 type RecipeInfo = {
   id: number;
@@ -19,23 +24,55 @@ type RecipeInfo = {
 };
 
 export const searchRecipes = async (req: Request, res: Response) => {
-  const ingredientsParam = req.query.ingredients as string;
-
-  if (!ingredientsParam) {
-    return Send.error(res, "Ingredients query parameter is required");
+  if (isQuotaBlocked()) {
+    const remainingTime = getRemainingTime();
+    return Send.dailyQuotaReached(res, remainingTime);
   }
 
-  const ingredients = ingredientsParam
-    .split(",")
-    .map((ing) => ing.trim().toLowerCase());
+  try {
+    const ingredientsParam = req.query.ingredients as string;
 
-  const recipes: RecipeInfo[] = await searchRecipesByIngredients(ingredients);
+    if (!ingredientsParam) {
+      return Send.error(res, "Ingredients query parameter is required");
+    }
 
-  const recipeIds = recipes.map((recipe) => recipe.id);
+    const ingredients = ingredientsParam
+      .split(",")
+      .map((ing) => ing.trim().toLowerCase());
 
-  const recipesInfo: RecipeInfo[] = await GetRecipeInformationBulk(recipeIds);
+    const result = await searchRecipesByIngredients(ingredients);
+    const recipes: RecipeInfo[] = result.data;
+    const headers = result.headers;
 
-  return Send.success(res, { recipesInfo });
+    // CHECK QUOTA LEFT
+    const quotaLeft = Number(headers["x-api-quota-left"]);
+
+    console.log("Quota left:", quotaLeft);
+
+    if (quotaLeft <= 5) {
+      setQuotaResetTime();
+      console.log("Quota low, reset timer started");
+    }
+
+    const recipeIds = recipes.map((recipe) => recipe.id);
+
+    const recipesInfo: RecipeInfo[] = await GetRecipeInformationBulk(recipeIds);
+
+    return Send.success(res, { recipesInfo });
+  } catch (error: any) {
+    if (error.response && error.response.status === 402) {
+      let remainingTime = getRemainingTime();
+
+      if (remainingTime === 0) {
+        setQuotaResetTime();
+        remainingTime = getRemainingTime();
+      }
+
+      return Send.dailyQuotaReached(res, remainingTime);
+    }
+
+    return Send.error(res);
+  }
 };
 
 export const saveRecipe = async (req: Request, res: Response) => {

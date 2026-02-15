@@ -47,10 +47,18 @@ const register = async (req: Request, res: Response) => {
       },
     });
 
+    // Generate tokens
+    const accessToken = generateAccessToken(newUser.id);
+    const refreshToken = generateRefreshToken(newUser.id);
+
+    res.cookie("refreshToken", refreshToken, refreshTokenCookieConfig);
+
+    res.cookie("accessToken", accessToken, accessTokenCookieConfig);
+
     return Send.success(
       res,
-      { userId: newUser.id },
-      "User registered successfully",
+      { user: { id: newUser.id, email: newUser.email } },
+      "Registration successful",
     );
   } catch (error) {
     console.error("Registration error:", error);

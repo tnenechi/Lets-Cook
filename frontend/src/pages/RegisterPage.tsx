@@ -1,84 +1,77 @@
-import {
-  Form,
-  Link,
-  redirect,
-  type ActionFunctionArgs,
-} from "react-router-dom";
+import { useState, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../api/client";
 import toast from "react-hot-toast";
-
-export async function registerAction({ request }: ActionFunctionArgs) {
-  const formData = await request.formData();
-  const email = String(formData.get("email") || "");
-  const password = String(formData.get("password") || "");
-  const confirmPassword = String(formData.get("confirmPassword") || "");
-
-  if (password !== confirmPassword) {
-    toast.error("Passwords must match");
-    return;
-  }
-
-  try {
-    const res = await api.post("/auth/register", { email, password });
-    if (!res.data.success) {
-      return { error: res.data.data || "Registration failed" };
-    }
-    toast.success("Successfully registered!");
-    return redirect("/login");
-  } catch (err: any) {
-    toast.error(err.response?.data?.message);
-    console.log("Registration error: ", err);
-    return { error: err.response?.data?.data || "Registration failed" };
-  }
-}
+import { useAuth } from "../context/AuthContext";
 
 export default function RegisterPage() {
+  const { refreshUser } = useAuth();
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const confirmRef = useRef<HTMLInputElement>(null);
+
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      await api.post("/auth/register", { email, password });
+      toast.success("Successfully registered!");
+      await refreshUser();
+      navigate("/");
+    } catch (err: any) {
+      console.log("Registration error:", err);
+      const errMsg = err.response?.data?.message ?? "Registration failed";
+      toast.error(errMsg);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="w-full max-w-5xl rounded-xl shadow-lg grid grid-cols-1 md:grid-cols-2 overflow-hidden">
         {/* Left Column */}
         <div
-          className="hidden md:flex flex-col justify-between p-10 bg-cover bg-center relative "
-          style={{ backgroundImage: "url('/images/chicken1.jpg')" }}
+          className="hidden md:flex flex-col justify-between p-10 bg-cover bg-center relative"
+          style={{ backgroundImage: "url('/images/register.jpg')" }}
         >
-          <div className="absolute inset-0 bg-neutral/40" />
+          <div className="absolute inset-0 bg-neutral/20" />
           <div className="z-10 text-white">
-            <h3 className="mb-2">Let’s get started. </h3>
-            <h1 className="mb-4">CREATE ACCOUNT</h1>
+            <h3 className="mb-2">Let’s get started.</h3>
           </div>
-          <div />
         </div>
 
         {/* Form Column */}
         <div className="flex items-center justify-center p-10">
           <div className="w-full max-w-sm">
-            <h2 className=" mb-2">Register Account</h2>
+            <h2 className="mb-2">Register Account</h2>
             <p className="mb-6">Create your account to continue.</p>
 
-            <Form method="post" className="space-y-4">
+            <form onSubmit={handleRegister} className="space-y-4">
               {/* EMAIL */}
               <label className="input validator w-full">
-                <svg
-                  className="h-[1em] opacity-50"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                >
-                  <g
-                    strokeLinejoin="round"
-                    strokeLinecap="round"
-                    strokeWidth="2.5"
-                    fill="none"
-                    stroke="currentColor"
-                  >
-                    <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                  </g>
-                </svg>
                 <input
-                  name="email"
                   type="email"
                   placeholder="youremail@gmail.com"
                   required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </label>
               <div className="validator-hint hidden">
@@ -87,90 +80,81 @@ export default function RegisterPage() {
 
               {/* PASSWORD */}
               <label className="input validator w-full">
-                <svg
-                  className="h-[1em] opacity-50"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                >
-                  <g
-                    strokeLinejoin="round"
-                    strokeLinecap="round"
-                    strokeWidth="2.5"
-                    fill="none"
-                    stroke="currentColor"
-                  >
-                    <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"></path>
-                    <circle
-                      cx="16.5"
-                      cy="7.5"
-                      r=".5"
-                      fill="currentColor"
-                    ></circle>
-                  </g>
-                </svg>
                 <input
-                  name="password"
-                  type="password"
-                  required
+                  ref={passwordRef}
+                  type={showPassword ? "text" : "password"}
                   placeholder="Password"
+                  required
                   minLength={8}
                   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                  title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    if (confirmRef.current) {
+                      if (confirmRef.current.value !== e.target.value) {
+                        confirmRef.current.setCustomValidity(
+                          "Passwords do not match",
+                        );
+                      } else {
+                        confirmRef.current.setCustomValidity("");
+                      }
+                    }
+                  }}
                 />
+                <button
+                  type="button"
+                  className="text-gray-500"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? "Hide" : "Show"}
+                </button>
               </label>
               <p className="validator-hint hidden">
-                Must be more than 8 characters, including
-                <br />
-                At least one number <br />
-                At least one lowercase letter <br />
-                At least one uppercase letter
+                Must be more than 8 characters, including at least one number,
+                lowercase and uppercase letter
               </p>
 
               {/* CONFIRM PASSWORD */}
-              <label className="input validator w-full">
-                <svg
-                  className="h-[1em] opacity-50"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                >
-                  <g
-                    strokeLinejoin="round"
-                    strokeLinecap="round"
-                    strokeWidth="2.5"
-                    fill="none"
-                    stroke="currentColor"
-                  >
-                    <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"></path>
-                    <circle
-                      cx="16.5"
-                      cy="7.5"
-                      r=".5"
-                      fill="currentColor"
-                    ></circle>
-                  </g>
-                </svg>
+              <label className="input validator w-full ">
                 <input
-                  name="confirmPassword"
-                  type="password"
-                  required
+                  ref={confirmRef}
+                  type={showConfirm ? "text" : "password"}
                   placeholder="Confirm password"
+                  required
                   minLength={8}
                   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                  title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
+                  value={confirmPassword}
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value);
+                    if (passwordRef.current) {
+                      if (passwordRef.current.value !== e.target.value) {
+                        confirmRef.current?.setCustomValidity(
+                          "Passwords do not match",
+                        );
+                      } else {
+                        confirmRef.current?.setCustomValidity("");
+                      }
+                    }
+                  }}
                 />
+                <button
+                  type="button"
+                  className="text-gray-500"
+                  onClick={() => setShowConfirm(!showConfirm)}
+                >
+                  {showConfirm ? "Hide" : "Show"}
+                </button>
               </label>
-              <p className="validator-hint hidden">
-                Must be more than 8 characters, including
-                <br />
-                At least one number <br />
-                At least one lowercase letter <br />
-                At least one uppercase letter
-              </p>
+              <p className="validator-hint hidden">Passwords do not match</p>
 
-              <button type="submit" className="btn btn-block btn-primary">
-                Register
+              <button
+                type="submit"
+                className="btn btn-block btn-primary"
+                disabled={loading}
+              >
+                {loading ? "Registering..." : "Register"}
               </button>
-            </Form>
+            </form>
 
             <p className="text-center mt-4">
               Already have an account?{" "}

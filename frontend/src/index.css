@@ -1,9 +1,15 @@
 @import "tailwindcss";
 
+@plugin "daisyui/theme" {
+  name: "cupcake";
+  default: true;
+  --color-primary: #8963ba;
+  --color-primary-content: #ffffff;
+}
+
 @plugin "daisyui" {
   themes:
-    forest --default,
-    retro;
+    /* cupcake --default, */ retro;
 }
 
 @theme {
@@ -82,15 +88,8 @@
   }
 }
 
-.carousel {
-  /* overflow-x: hidden !important; */
-  scroll-snap-type: none !important;
-}
-
-.carousel-item {
-  scroll-snap-align: unset !important;
-}
-
-.top > .carousel-item:hover {
-  cursor: pointer;
+@layer utilities {
+  .logo {
+    font-family: "Gambarino", serif;
+  }
 }
