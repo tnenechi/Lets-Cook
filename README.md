@@ -1,4 +1,4 @@
-# Let's Cook 🍳
+# Let's Cook
 
 **Let’s Cook** is a full-stack recipe discovery web app that helps users find meals based on ingredients they already have, reducing food waste and decision fatigue. Users can search recipes, view detailed summaries, and save favorites to their personal collection.
 
