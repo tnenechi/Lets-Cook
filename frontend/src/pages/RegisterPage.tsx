@@ -35,7 +35,6 @@ export default function RegisterPage() {
       await refreshUser();
       navigate("/");
     } catch (err: any) {
-      console.log("Registration error:", err);
       const errMsg = err.response?.data?.message ?? "Registration failed";
       toast.error(errMsg);
     } finally {
