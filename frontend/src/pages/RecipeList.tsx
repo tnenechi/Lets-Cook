@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { redirect, useSearchParams } from "react-router";
+import { Link, redirect, useSearchParams } from "react-router";
 import api from "../api/client";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
@@ -173,6 +173,12 @@ const RecipeList = () => {
             <span className="p-2 bg-primary text-primary-content rounded-2xl">
               {formatTime(timeRemaining)}
             </span>
+          </p>
+          <p className="my-10">
+            Take a look at the{" "}
+            <Link to="/dummy-page" className="underline underline-offset-2 text-info">
+              Demo Page.
+            </Link>
           </p>
         </div>
       ) : recipes.length === 0 ? (
