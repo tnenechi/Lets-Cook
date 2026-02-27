@@ -145,8 +145,16 @@ const RecipeList = () => {
   return (
     <div className="px-x-xs sm:px-x-sm pb-20">
       {loading ? (
-        <div className="h-[70vh] flex justify-center items-center">
-          <h2>Loading recipes...</h2>
+        <div className="h-[70vh]">
+          <h2 className="my-4">Loading recipes...</h2>
+
+          <div className="flex gap-2 flex-wrap">
+            <SkeletonContent />
+            <SkeletonContent />
+            <SkeletonContent />
+            <SkeletonContent />
+            <SkeletonContent />
+          </div>
         </div>
       ) : quotaExceeded ? (
         <div className="h-[70vh] flex flex-col justify-center items-center">
@@ -233,9 +241,11 @@ const RecipeList = () => {
                       {recipe.readyInMinutes + " min"}
                     </p>
                   </div>
+
                   <p className="line-clamp-3">
                     {recipe.summary.replace(/<[^>]+>/g, "")}
                   </p>
+
                   <div className="mt-auto flex items-center justify-between">
                     <a
                       href={recipe.sourceUrl}
@@ -281,6 +291,17 @@ const RecipeList = () => {
           </div>
         </>
       )}
+    </div>
+  );
+};
+
+const SkeletonContent = () => {
+  return (
+    <div className="flex w-52 flex-col gap-4">
+      <div className="skeleton h-32 w-full"></div>
+      <div className="skeleton h-4 w-28"></div>
+      <div className="skeleton h-4 w-full"></div>
+      <div className="skeleton h-4 w-full"></div>
     </div>
   );
 };
