@@ -12,7 +12,7 @@ const Footer = () => {
             &copy; {new Date().getFullYear()} Let's Cook - Designed & Developed
             by{" "}
             <a
-              href="https://thony-enechi.onrender.com"
+              href="https://thonyenechi.com"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block text-info transition-transform duration-200 hover:scale-95"
